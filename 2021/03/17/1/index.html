@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+     Hexo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title"></div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 17:24:47
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <p>@<a href="%E7%9B%AE%E5%BD%95">TOC</a></p>
+<h1 id="一-基础部分"><a href="#一-基础部分" class="headerlink" title="一.基础部分"></a>一.基础部分</h1><h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>变量规则：变量以$开头，变量名称以以字母或下划线开头，变量名称只包含字母数字字符和下划线，大小写敏感<br>三种作用域：<br>函数之外声明的变量拥有 Global 作用域，只能在函数以外进行访问。函数内访问全局变量要用得到global关键词。<br>函数内部声明的变量拥有 LOCAL 作用域，只能在函数内部进行访问。<br>保留执行完的函数的变量要用到static关键词。</p>
+<h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><p>echo - 能够输出一个以上的字符串。<br>print - 只能输出一个字符串，并始终返回 1。<br>因为echo无返回值蓑衣echo更快。这两个有无括号都能用</p>
+<h2 id="字符串函数："><a href="#字符串函数：" class="headerlink" title="字符串函数："></a>字符串函数：</h2><p>strlen() 函数返回字符串的长度，以字符计。<br>str_word_count() 函数对字符串中的单词进行计数：<br>strrev() 函数反转字符串：<br>strpos(“指定字符串”,”搜索文本”) 函数用于检索字符串内指定的字符或文本。<br>str_replace(“源文本”,”替换文本”,”指定字符串”) 函数用一些字符串替换字符串中的另一些字符。</p>
+<h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2><p>设置常量，请使用 define() 函数 - 它使用三个参数：首个参数定义常量的名称、第二个参数定义常量的值、可选的第三个参数规定常量名是否对大小写不敏感。默认是 false。<br>调用常量直接调用名称即可得出常量的值</p>
+<h2 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h2><p>基础的就不多赘述，列举一些特殊的：<br>串接：<code>$txt1 = &quot;Hello&quot; $txt2 = $txt1 . &quot; world!&quot;  txt2 包含 &quot;Hello world!&quot;</code><br>串接赋值：<code>$txt1 = &quot;Hello&quot; $txt1 .= &quot; world!&quot;$txt1 包含 &quot;Hello world!&quot;</code><br>递增递减：<code>++$x，--$x先加减再返回；$x++，$x--先返回再加减</code><br>比较：<code>== 等于（类型可不等）；===全等（类型相等）</code></p>
+<h2 id="条件语句，循环语句"><a href="#条件语句，循环语句" class="headerlink" title="条件语句，循环语句"></a>条件语句，循环语句</h2><p>基础的就不多赘述，列举一些特殊的：<br>foreach ：并用于遍历数组中的每个键/值对。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach ($array as $value) &#123;</span><br><span class="line">  code to be executed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>创建的函数以”function” 开头：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function functionName() &#123;</span><br><span class="line">  被执行的代码;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数名能够以字母或下划线开头（而非数字），函数名对大小写不敏感，函数名应该能够反映函数所执行的任务。</p>
+<p>默认函数值：调用时没参数就会用默认的值，本例中是50.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function setHeight($minheight&#x3D;50) &#123;</span><br><span class="line">  echo &quot;The height is : $minheight &lt;br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>array() 函数用于创建数组。<br>count()用于获取数组元素数量（索引例子中是3个）。<br>三种数组类型：<br>索引数组 - 带有数字索引的数组（从0开始）:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$cars&#x3D;array(&quot;porsche&quot;,&quot;BMW&quot;,&quot;Volvo&quot;);</span><br><span class="line">或者</span><br><span class="line">$cars[0]&#x3D;&quot;porsche&quot;;</span><br><span class="line">$cars[1]&#x3D;&quot;BMW&quot;;</span><br><span class="line">$cars[2]&#x3D;&quot;Volvo&quot;;</span><br></pre></td></tr></table></figure>
+<p>关联数组 - 带有指定键的数组（感觉类似于字典）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$age&#x3D;array(&quot;Bill&quot;&#x3D;&gt;&quot;35&quot;,&quot;Steve&quot;&#x3D;&gt;&quot;37&quot;,&quot;Elon&quot;&#x3D;&gt;&quot;43&quot;);</span><br><span class="line">或者</span><br><span class="line">$age[&#39;Bill&#39;]&#x3D;&quot;63&quot;;</span><br><span class="line">$age[&#39;Steve&#39;]&#x3D;&quot;56&quot;;</span><br><span class="line">$age[&#39;Elon&#39;]&#x3D;&quot;47&quot;;</span><br></pre></td></tr></table></figure>
+<p>多维数组 - 包含一个或多个数组的数组<br>在高级部分中学习</p>
+<h2 id="数组排序"><a href="#数组排序" class="headerlink" title="数组排序"></a>数组排序</h2><p>sort() - 以升序对数组排序<br>rsort() - 以降序对数组排序<br>asort() - 根据值，以升序对关联数组进行排序<br>ksort() - 根据键，以升序对关联数组进行排序<br>arsort() - 根据值，以降序对关联数组进行排序<br>krsort() - 根据键，以降序对关联数组进行排序<br>例子：”Bill”=&gt;”63”；键=&gt;值</p>
+<h2 id="魔术常量"><a href="#魔术常量" class="headerlink" title="魔术常量"></a>魔术常量</h2><p><code>__LINE__ </code>文件中的当前行号。<br><code>__FILE__</code>文件的完整路径和文件名。如果用在被包含文件中，则返回被包含的文件名。<br><code>__DIR__</code>文件所在的目录。如果用在被包括文件中，则返回被包括的文件所在的目录。<br><code>__FUNCTION__</code>函数名称。<br><code>__CLASS__</code>类的名称。<br><code>__TRAIT__</code>Trait 的名字。<br><code>__METHOD__</code>类的方法名。<br><code>__NAMESPACE__</code>当前命名空间的名称。</p>
+<h2 id="超全局"><a href="#超全局" class="headerlink" title="超全局"></a>超全局</h2><p> $GLOBALS[index] 的数组中存储了所有全局变量，变量的名字就是数组的键，可在任意位置访问全局变量（从函数或方法中均可）。例子：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php </span><br><span class="line">$x &#x3D; 75; </span><br><span class="line">$y &#x3D; 25;</span><br><span class="line"> </span><br><span class="line">function addition() &#123; </span><br><span class="line">  $GLOBALS[&#39;z&#39;] &#x3D; $GLOBALS[&#39;x&#39;] + $GLOBALS[&#39;y&#39;]; </span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">addition(); </span><br><span class="line">echo $z;  &#x2F;&#x2F; $z&#x3D;100</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
+<p> $_SERVER 这种超全局变量保存关于报头、路径和脚本位置的信息。<br><img src="https://img-blog.csdnimg.cn/20210225092027796.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxNTA5OQ==,size_16,color_FFFFFF,t_70#pic_center" alt="截自w3school"><br>$_REQUEST 用于收集 HTML 表单（包括post和get）提交的数据。例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;form method&#x3D;&quot;post&quot; action&#x3D;&quot;&lt;?php echo $_SERVER[&#39;PHP_SELF&#39;];?&gt;&quot;&gt;</span><br><span class="line">Name: &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;fname&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;submit&quot;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php </span><br><span class="line">$name &#x3D; $_REQUEST[&#39;fname&#39;]; &#x2F;&#x2F;获取我们输入的fname</span><br><span class="line">echo $name; </span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>$_POST 广泛用于收集提交 method=”post” 的 HTML 表单后的表单数据，也常用于传递变量。例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;form method&#x3D;&quot;post&quot; action&#x3D;&quot;&lt;?php echo $_SERVER[&#39;PHP_SELF&#39;];?&gt;&quot;&gt;</span><br><span class="line">Name: &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;fname&quot;&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;submit&quot;&gt;</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php </span><br><span class="line">$name &#x3D; $_POST[&#39;fname&#39;];</span><br><span class="line">echo $name; </span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p> $_GET 也可用于收集提交 HTML 表单 (method=”get”) 之后的表单数据，也可以收集 URL 中的发送的数据。<br>总结： $_REQUEST[“参数”]具用 $_POST[“参数”] $_GET[“参数”]的功能,但是 $_REQUEST[“参数”]比较慢。</p>
+<h1 id="二-表单部分"><a href="#二-表单部分" class="headerlink" title="二.表单部分"></a>二.表单部分</h1><h2 id="表单处理"><a href="#表单处理" class="headerlink" title="表单处理"></a>表单处理</h2><p>$_GET 和 $_POST 用于收集表单数据。<br>GET 和 POST 都创建数组，此数组包含键/值对，其中的键是表单控件的名称，而值是来自用户的输入数据。<br>GET 和 POST 被视作 $_GET 和 $_POST。它们是超全局变量，这意味着对它们的访问无需考虑作用域 - 无需任何特殊代码，您能够从任何函数、类或文件访问它们。<br>$_GET 是通过 URL 参数传递到当前脚本的变量数组。<br>$_POST 是通过 HTTP POST 传递到当前脚本的变量数组。<br>GET 方法从表单发送的信息对任何人都是可见的（所有变量名和值都显示在 URL 中）。GET 对所发送信息的数量也有限制。限制在大约 2000 个字符。不过，由于变量显示在 URL 中，把页面添加到书签中也更为方便。<br>POST 方法从表单发送的信息对其他人是不可见的（所有名称/值会被嵌入 HTTP 请求的主体中），并且对所发送信息的数量也无限制，支持高阶功能，比如在向服务器上传文件时进行 multi-part 二进制输入。</p>
+<p>总结：post更安全，get可以把页面添加到书签</p>
+<h2 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h2><p>PHP执行表单验证来提高安全性。</p>
+<p>htmlspecialchars() 函数把特殊字符转换为 HTML 实体。这意味着 &lt; 和 &gt; 之类的 HTML 字符会被替换为 &lt; 和 &gt; 。这样可防止攻击者通过在表单中注入 HTML 或 JavaScript 代码（跨站点脚本攻击）对代码进行利用。<br>trim() 函数去除输入数据中不必要的字符（多余的空格、制表符、换行）。<br>stripslashes() 函数删除用户输入数据中的反斜杠（\）<br>总结：$_SERVER[“PHP_SELF”] 不安全，容易被xss注入js脚本，需要用到htmlspecialchars() 函数来把特殊字符转换为 HTML 实体。例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F; 定义变量并设置为空值</span><br><span class="line">$name &#x3D; $email &#x3D; $gender &#x3D; $comment &#x3D; $website &#x3D; &quot;&quot;;</span><br><span class="line"></span><br><span class="line">if ($_SERVER[&quot;REQUEST_METHOD&quot;] &#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  $name &#x3D; test_input($_POST[&quot;name&quot;]);&#x2F;&#x2F;调用过滤来提高安全性</span><br><span class="line">  $email &#x3D; test_input($_POST[&quot;email&quot;]);</span><br><span class="line">  $website &#x3D; test_input($_POST[&quot;website&quot;]);</span><br><span class="line">  $comment &#x3D; test_input($_POST[&quot;comment&quot;]);</span><br><span class="line">  $gender &#x3D; test_input($_POST[&quot;gender&quot;]);</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;过滤函数</span><br><span class="line">function test_input($data) &#123;</span><br><span class="line">  $data &#x3D; trim($data);</span><br><span class="line">  $data &#x3D; stripslashes($data);</span><br><span class="line">  $data &#x3D; htmlspecialchars($data);</span><br><span class="line">  return $data;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="表单验证-必填字段"><a href="#表单验证-必填字段" class="headerlink" title="表单验证 - 必填字段"></a>表单验证 - 必填字段</h2><p>制作必填输入字段方法：<br>输入部分：为每个 $_POST 变量添加了一个 if else 语句。这条语句检查 $_POST 变量是否为空（通过 PHP empty() 函数）。如果为空，则错误消息会存储于不同的错误变量中。如果不为空，则通过 test_input() 函数发送用户输入数据。<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if ($_SERVER[&quot;REQUEST_METHOD&quot;] &#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  if (empty($_POST[&quot;name&quot;])) &#123;</span><br><span class="line">    $nameErr &#x3D; &quot;Name is required&quot;;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    $name &#x3D; test_input($_POST[&quot;name&quot;]);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>输出部分：在每个被请求字段后面增加了一点脚本。如果需要，会生成恰当的错误消息。例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Name: &lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;name&quot;&gt;</span><br><span class="line">&lt;span class&#x3D;&quot;error&quot;&gt;* &lt;?php echo $nameErr;?&gt;&lt;&#x2F;span&gt; &#x2F;&#x2F;若错误则输出nameErr</span><br></pre></td></tr></table></figure>
+<h2 id="表单验证-验证-E-mail-和-URL"><a href="#表单验证-验证-E-mail-和-URL" class="headerlink" title="表单验证 - 验证 E-mail 和 URL"></a>表单验证 - 验证 E-mail 和 URL</h2><p>验证名字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$name &#x3D; test_input($_POST[&quot;name&quot;]);</span><br><span class="line">if (!preg_match(&quot;&#x2F;^[a-zA-Z ]*$&#x2F;&quot;,$name)) &#123;   &#x2F;&#x2F;只允许字母和空格</span><br><span class="line">  $nameErr &#x3D; &quot;只允许字母和空格！&quot;; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>验证email：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$email &#x3D; test_input($_POST[&quot;email&quot;]);</span><br><span class="line">if (!preg_match(&quot;&#x2F;([\w\-]+\@[\w\-]+\.[\w\-]+)&#x2F;&quot;,$email)) &#123;</span><br><span class="line">  $emailErr &#x3D; &quot;无效的 email 格式！&quot;; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>验证url：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$website &#x3D; test_input($_POST[&quot;website&quot;]);</span><br><span class="line">if (!preg_match(&quot;&#x2F;\b(?:(?:https?|ftp):\&#x2F;\&#x2F;|www\.)[-a-z0-9+&amp;@#\&#x2F;%?&#x3D;~_|!:,.;]*[-a-z0-9+&amp;@#\&#x2F;%</span><br><span class="line">&#x3D;~_|]&#x2F;i&quot;,$website)) &#123;</span><br><span class="line">  $websiteErr &#x3D; &quot;无效的 URL&quot;; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总结：通过preg_match() 函数检索字符串的模式，如果模式存在则返回 true，否则返回 false。</p>
+<h1 id="三-高级部分"><a href="#三-高级部分" class="headerlink" title="三.高级部分"></a>三.高级部分</h1><h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><p>多维数组指的是包含一个或多个数组的数组。<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$cars &#x3D; array</span><br><span class="line">   (</span><br><span class="line">   array(&quot;Volvo&quot;,33,20),</span><br><span class="line">   array(&quot;BMW&quot;,17,15),</span><br><span class="line">   array(&quot;Saab&quot;,5,2),</span><br><span class="line">   array(&quot;Land Rover&quot;,15,11)</span><br><span class="line">   );</span><br><span class="line">   </span><br><span class="line">echo $cars[0][0].&quot;: 库存：&quot;.$cars[0][1].&quot;, 已售：&quot;.$cars[0][2].&quot;.&lt;br&gt;&quot;;&#x2F;&#x2F;</span><br><span class="line">echo $cars[1][0].&quot;: 库存：&quot;.$cars[1][1].&quot;, 已售：&quot;.$cars[1][2].&quot;.&lt;br&gt;&quot;;</span><br><span class="line">echo $cars[2][0].&quot;: 库存：&quot;.$cars[2][1].&quot;, 已售：&quot;.$cars[2][2].&quot;.&lt;br&gt;&quot;;</span><br><span class="line">echo $cars[3][0].&quot;: 库存：&quot;.$cars[3][1].&quot;, 已售：&quot;.$cars[3][2].&quot;.&lt;br&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="日期和时间"><a href="#日期和时间" class="headerlink" title="日期和时间"></a>日期和时间</h2><p><code>date(format,timestamp)</code><br>format:必需。规定时间戳的格式。<br>timestamp:可选。规定时间戳,默认是当前时间和日期。<br>日期：<br>d - 表示月里的某天（01-31）<br>m - 表示月（01-12）<br>Y - 表示年（四位数）<br>1 - 表示周里的某天<br>其他字符，比如 “/“, “.” 或 “-“ 也可被插入字符中，以增加其他格式。例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo &quot;今天是 &quot; . date(&quot;Y&#x2F;m&#x2F;d&quot;) . &quot;&lt;br&gt;&quot;;&#x2F;&#x2F;今天是 2021&#x2F;02&#x2F;25</span><br><span class="line">echo &quot;今天是 &quot; . date(&quot;Y.m.d&quot;) . &quot;&lt;br&gt;&quot;;&#x2F;&#x2F;今天是 2021.02.25</span><br><span class="line">echo &quot;今天是 &quot; . date(&quot;Y-m-d&quot;) . &quot;&lt;br&gt;&quot;;&#x2F;&#x2F;今天是 2021-02-25</span><br><span class="line">echo &quot;今天是 &quot; . date(&quot;l&quot;);&#x2F;&#x2F;今天是 Thursday</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>时间：<br>h - 带有首位零的 12 小时小时格式<br>i - 带有首位零的分钟<br>s - 带有首位零的秒（00 -59）<br>a - 小写的午前和午后（am 或 pm）<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo &quot;现在时间是 &quot; . date(&quot;h:i:sa&quot;);&#x2F;&#x2F;当前时间是 11:22:50am</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Include-文件"><a href="#Include-文件" class="headerlink" title="Include 文件"></a>Include 文件</h2><p>include （或 require）语句会获取指定文件中存在的所有文本/代码/标记，并复制到使用 include 语句的文件中。（程序员为了减少工作量而吧相同的部分写入一个文件。）<br>include 或 require 语句，可以将 PHP 文件的内容插入另一个 PHP 文件（在服务器执行它之前）。<br>include 和 require 语句是相同的，除了错误处理方面：<br>require 会生成致命错误（E_COMPILE_ERROR）并停止脚本。<br>include 只生成警告（E_WARNING），并且脚本会继续。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">include &#39;filename&#39;;</span><br><span class="line">或</span><br><span class="line">require &#39;filename&#39;;</span><br></pre></td></tr></table></figure>
+<p>例子：我们有一个名为 “footer.php” 的标准的页脚文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo &quot;&lt;p&gt;Copyright © 2006-&quot; . date(&quot;Y&quot;) . &quot; W3School.com.cn&lt;&#x2F;p&gt;&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>如需在一张页面中引用这个页脚文件，请使用 include 语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;h1&gt;欢迎访问我们的首页！&lt;&#x2F;h1&gt;</span><br><span class="line">&lt;p&gt;一段文本。&lt;&#x2F;p&gt;</span><br><span class="line">&lt;p&gt;一段文本。&lt;&#x2F;p&gt;</span><br><span class="line">&lt;?php include &#39;footer.php&#39;;?&gt;&#x2F;&#x2F;Copyright © 2006-2021 W3School.com.cn</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="文件处理"><a href="#文件处理" class="headerlink" title="文件处理"></a>文件处理</h2><p>readfile() 函数读取文件，并把它写入输出缓冲。<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo readfile(&quot;webdictionary.txt&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="文件打开-读取-关闭"><a href="#文件打开-读取-关闭" class="headerlink" title="文件打开/读取/关闭"></a>文件打开/读取/关闭</h2><p>打开文件：<br>打开文件的更好的方法是通过 fopen() 函数，此函数比readfile() 函数有更多选项。<br>fopen() 的第一个参数包含被打开的文件名，第二个参数规定打开文件的模式。例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$myfile &#x3D; fopen(&quot;webdictionary.txt&quot;, &quot;r&quot;) or die(&quot;Unable to open file!&quot;);</span><br><span class="line">echo fread($myfile,filesize(&quot;webdictionary.txt&quot;));</span><br><span class="line">fclose($myfile);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>参数：<br><img src="https://img-blog.csdnimg.cn/20210225135127918.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxNTA5OQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>读取文件：<br>fread() 函数读取打开的文件，fread() 的第一个参数包含待读取文件的文件名，第二个参数规定待读取的最大字节数。</p>
+<p>读取单行文件：<br>fgets() 函数用于从文件读取单行。</p>
+<p>读取单字符：<br>fgetc() 函数用于从文件中读取单个字符。</p>
+<p>关闭文件：<br>fclose() 函数用于关闭打开的文件。</p>
+<p>检查 End-Of-File：<br>feof() 函数检查是否已到达 “end-of-file” (在操作系统中表示资料源无更多的资料可读取)。</p>
+<h2 id="文件创建-写入"><a href="#文件创建-写入" class="headerlink" title="文件创建/写入"></a>文件创建/写入</h2><p>创建文件：<br>fopen() 函数也用于创建文件，用 fopen() 打开并不存在的文件，此函数会创建文件，假定文件被打开为写入（w）或增加（a）。</p>
+<p>写入文件：<br>fwrite() 函数用于写入文件，fwrite() 的第一个参数包含要写入的文件的文件名，第二个参数是被写的字符串。</p>
+<h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><p>创建一个文件上传表单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;form action&#x3D;&quot;upload_file.php&quot; method&#x3D;&quot;post&quot;</span><br><span class="line">enctype&#x3D;&quot;multipart&#x2F;form-data&quot;&gt;&#x2F;*在表单需要二进制数据时，比如文件内容，请使用 &quot;multipart&#x2F;form-data&quot;。*&#x2F;</span><br><span class="line">&lt;label for&#x3D;&quot;file&quot;&gt;Filename:&lt;&#x2F;label&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;file&quot; name&#x3D;&quot;file&quot; id&#x3D;&quot;file&quot; &#x2F;&gt; 输入文件</span><br><span class="line">&lt;br &#x2F;&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;submit&quot; name&#x3D;&quot;submit&quot; value&#x3D;&quot;Submit&quot; &#x2F;&gt;&#x2F;&#x2F;提交按钮</span><br><span class="line">&lt;&#x2F;form&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>创建上传脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if ($_FILES[&quot;file&quot;][&quot;error&quot;] &gt; 0)</span><br><span class="line">  &#123;</span><br><span class="line">  echo &quot;Error: &quot; . $_FILES[&quot;file&quot;][&quot;error&quot;] . &quot;&lt;br &#x2F;&gt;&quot;;&#x2F;&#x2F;由文件上传导致的错误代码</span><br><span class="line">  &#125;</span><br><span class="line">else</span><br><span class="line">  &#123;</span><br><span class="line">  echo &quot;Upload: &quot; . $_FILES[&quot;file&quot;][&quot;name&quot;] . &quot;&lt;br &#x2F;&gt;&quot;;&#x2F;&#x2F;被上传文件的名称</span><br><span class="line">  echo &quot;Type: &quot; . $_FILES[&quot;file&quot;][&quot;type&quot;] . &quot;&lt;br &#x2F;&gt;&quot;;&#x2F;&#x2F;被上传文件的名称</span><br><span class="line">  echo &quot;Size: &quot; . ($_FILES[&quot;file&quot;][&quot;size&quot;] &#x2F; 1024) . &quot; Kb&lt;br &#x2F;&gt;&quot;;&#x2F;*被上传文件的大小，以字节计*&#x2F;</span><br><span class="line">  echo &quot;Stored in: &quot; . $_FILES[&quot;file&quot;][&quot;tmp_name&quot;];&#x2F;&#x2F;存储在服务器的文件的临时副本的名称</span><br><span class="line">  &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>上传限制并保存被上传的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if ((($_FILES[&quot;file&quot;][&quot;type&quot;] &#x3D;&#x3D; &quot;image&#x2F;gif&quot;)</span><br><span class="line">|| ($_FILES[&quot;file&quot;][&quot;type&quot;] &#x3D;&#x3D; &quot;image&#x2F;jpeg&quot;)</span><br><span class="line">|| ($_FILES[&quot;file&quot;][&quot;type&quot;] &#x3D;&#x3D; &quot;image&#x2F;pjpeg&quot;))</span><br><span class="line">&amp;&amp; ($_FILES[&quot;file&quot;][&quot;size&quot;] &lt; 20000))</span><br><span class="line">  &#123;</span><br><span class="line">  if ($_FILES[&quot;file&quot;][&quot;error&quot;] &gt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">    echo &quot;Return Code: &quot; . $_FILES[&quot;file&quot;][&quot;error&quot;] . &quot;&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">  else</span><br><span class="line">    &#123;</span><br><span class="line">    echo &quot;Upload: &quot; . $_FILES[&quot;file&quot;][&quot;name&quot;] . &quot;&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">    echo &quot;Type: &quot; . $_FILES[&quot;file&quot;][&quot;type&quot;] . &quot;&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">    echo &quot;Size: &quot; . ($_FILES[&quot;file&quot;][&quot;size&quot;] &#x2F; 1024) . &quot; Kb&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">    echo &quot;Temp file: &quot; . $_FILES[&quot;file&quot;][&quot;tmp_name&quot;] . &quot;&lt;br &#x2F;&gt;&quot;;</span><br><span class="line"></span><br><span class="line">    if (file_exists(&quot;upload&#x2F;&quot; . $_FILES[&quot;file&quot;][&quot;name&quot;]))</span><br><span class="line">      &#123;</span><br><span class="line">      echo $_FILES[&quot;file&quot;][&quot;name&quot;] . &quot; already exists. &quot;;</span><br><span class="line">      &#125;</span><br><span class="line">    else</span><br><span class="line">      &#123;</span><br><span class="line">      move_uploaded_file($_FILES[&quot;file&quot;][&quot;tmp_name&quot;],</span><br><span class="line">      &quot;upload&#x2F;&quot; . $_FILES[&quot;file&quot;][&quot;name&quot;]);</span><br><span class="line">      echo &quot;Stored in: &quot; . &quot;upload&#x2F;&quot; . $_FILES[&quot;file&quot;][&quot;name&quot;];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">else</span><br><span class="line">  &#123;</span><br><span class="line">  echo &quot;Invalid file&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p>cookie 常用于识别用户。cookie 是服务器留在用户计算机中的小文件。每当相同的计算机通过浏览器请求页面时，它同时会发送 cookie。通过 PHP，您能够创建并取回 cookie 的值。</p>
+<p>创建 cookie：<br>setcookie() 函数用于设置 cookie。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setcookie(name,value,expire,path,domain,secure)</span><br></pre></td></tr></table></figure>
+<p>name：必需。规定 cookie 的名称。<br>value：必需。规定 cookie 的值。<br>expire：可选。规定 cookie 的有效期，单位：秒。<br>path：可选，规定 cookie 的服务器路径。<br>domain：可选。规定 cookie 的域名。<br>secure：可选。规定是否通过安全的 HTTPS 连接来传输 cookie。</p>
+<p>取回 Cookie 的值：<br> $_COOKIE 变量用于取回 cookie 的值。<br> 例子：查看是否设置cookie<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> &lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">if (isset($_COOKIE[&quot;user&quot;]))&#x2F;*isset() 函数用于检测变量是否已设置并且非 NULL, $_COOKIE 变量用于取回 cookie 的值。*&#x2F;</span><br><span class="line">  echo &quot;Welcome &quot; . $_COOKIE[&quot;user&quot;] . &quot;!&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">else</span><br><span class="line">  echo &quot;Welcome guest!&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure><br> 删除 cookie：<br> 删除 cookie 时，您应当使过期日期变更为过去的时间点。<br> 例子：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> &lt;?php </span><br><span class="line">&#x2F;&#x2F; set the expiration date to one hour ago</span><br><span class="line">setcookie(&quot;user&quot;, &quot;&quot;, time()-3600);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Sessions"><a href="#Sessions" class="headerlink" title="Sessions"></a>Sessions</h2><p>session 变量用于存储有关用户会话的信息，或更改用户会话的设置。Session 变量保存的信息是单一用户的，并且可供应用程序中的所有页面使用。<br>Session 的工作机制是：为每个访问者创建一个唯一的 id (UID)，并基于这个 UID 来存储变量。UID 存储在 cookie 中，亦或通过 URL 进行传导。</p>
+<p>开始 PHP Session：<br>session_start() 函数必须位于html标签之前</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php session_start(); ?&gt;&#x2F;*此代码会向服务器注册用户的会话，以便您可以开始保存用户信息，同时会为用户会话分配一个 UID。*&#x2F;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>存储 Session 变量：<br>存储和取回 session 变量是使用 PHP $_SESSION 变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();</span><br><span class="line">&#x2F;&#x2F; store session data</span><br><span class="line">$_SESSION[&#39;views&#39;]&#x3D;1;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;retrieve session data</span><br><span class="line">echo &quot;Pageviews&#x3D;&quot;. $_SESSION[&#39;views&#39;];&#x2F;&#x2F;Pageviews&#x3D;1</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>终结 Session:<br>删除某些 session 数据，可以使用 unset() 或 session_destroy() 函数。</p>
+<p>unset() 函数用于释放指定的 session 变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">unset($_SESSION[&#39;views&#39;]);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>也可以通过 session_destroy() 函数彻底终结 session（session_destroy() 将重置 session，您将失去所有已存储的 session 数据。）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_destroy();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="发送电子邮件"><a href="#发送电子邮件" class="headerlink" title="发送电子邮件"></a>发送电子邮件</h2><p>mail() 函数用于从脚本中发送电子邮件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mail(to,subject,message,headers,parameters)</span><br></pre></td></tr></table></figure>
+<p>to：必需。规定 email 接收者。<br>subject    ：必需。规定 email 的主题。注释：该参数不能包含任何新行字符。<br>message：必需。定义要发送的消息。应使用 LF (\n) 来分隔各行。<br>headers：可选。规定附加的标题，比如 From、Cc 以及 Bcc。应当使用 CRLF (\r\n) 分隔附加的标题。<br>parameters：可选。对邮件发送程序规定额外的参数。<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$to &#x3D; &quot;someone@example.com&quot;;</span><br><span class="line">$subject &#x3D; &quot;Test mail&quot;;</span><br><span class="line">$message &#x3D; &quot;Hello! This is a simple email message.&quot;;</span><br><span class="line">$from &#x3D; &quot;someonelse@example.com&quot;;</span><br><span class="line">$headers &#x3D; &quot;From: $from&quot;;</span><br><span class="line">mail($to,$subject,$message,$headers);</span><br><span class="line">echo &quot;Mail Sent.&quot;;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="安全的电子邮件"><a href="#安全的电子邮件" class="headerlink" title="安全的电子邮件"></a>安全的电子邮件</h2><p>采用过滤器来防止注入：<br>过滤器：<br>FILTER_SANITIZE_EMAIL 从字符串中删除电子邮件的非法字符<br>FILTER_VALIDATE_EMAIL 验证电子邮件地址</p>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>基本的错误处理：使用 die() 函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if(!file_exists(&quot;welcome.txt&quot;))</span><br><span class="line"> &#123;</span><br><span class="line"> die(&quot;File not found&quot;);&#x2F;&#x2F;若不存在则提示File not found</span><br><span class="line"> &#125;</span><br><span class="line">else</span><br><span class="line"> &#123;</span><br><span class="line"> $file&#x3D;fopen(&quot;welcome.txt&quot;,&quot;r&quot;);</span><br><span class="line"> &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>创建自定义错误处理器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error_function(error_level,error_message,error_file,error_line,error_context)</span><br></pre></td></tr></table></figure>
+<p>error_level：必需。为用户定义的错误规定错误报告级别。必须是一个值数。<br>error_message：必需。为用户定义的错误规定错误消息。<br>error_file：可选。规定错误在其中发生的文件名。<br>error_line    ：可选。规定错误发生的行号。<br>error_context：可选。规定一个数组，包含了当错误发生时在用的每个变量以及它们的值。<br>错误级别：<br><img src="https://img-blog.csdnimg.cn/20210225145313785.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxNTA5OQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>修改错误处理程序：<br>使用自定义函数来处理所有错误，set_error_handler() 仅需要一个参数，可以添加第二个参数来规定错误级别。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;error handler function</span><br><span class="line">function customError($errno, $errstr)</span><br><span class="line"> &#123; </span><br><span class="line"> echo &quot;&lt;b&gt;Error:&lt;&#x2F;b&gt; [$errno] $errstr&quot;;&#x2F;*实例：Error: [8] Undefined variable: test*&#x2F;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;set error handler</span><br><span class="line">set_error_handler(&quot;customError&quot;);&#x2F;*规定错误默认处理函数*&#x2F;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;trigger error</span><br><span class="line">echo($test);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>触发错误：<br>使用trigger_error() 在脚本中用户输入数据的位置，当用户的输入无效时触发错误的很有用的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$test&#x3D;2;</span><br><span class="line">if ($test&gt;1)</span><br><span class="line">&#123;</span><br><span class="line">trigger_error(&quot;Value must be 1 or below&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>错误记录：<br>通过使用 error_log() 函数，您可以向指定的文件或远程目的地发送错误记录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error_log(message,type,destination,headers);</span><br></pre></td></tr></table></figure>
+<p>message:必需。规定要记录的错误消息。<br>type:可选。规定错误应该发送到何处。可能的值：<br>0 - 默认。消息被发送到 PHP 的系统日志，使用操作系统的日志机制或者一个文件，取决于 php.ini 中如何 error_log 指令。<br>1 - 消息被发送到参数 destination 设置的邮件地址。第四个参数 extra_headers 只有在这个类型里才会被用到。<br>2 - 不再使用（仅用在 PHP 3 中）<br>3 - 消息被发送到位置为 destination 的文件里。字符 message 不会默认被当做新的一行。<br>4 - 消息被直接发送到 SAPI 日志处理程序中。<br>destination:可选。规定错误消息的目标。该值由 type 参数的值决定。<br>headers:可选。规定额外的头，比如 From、Cc 和 Bcc。该信息类型使用了 mail() 的同一个内置函数。仅当 message_type 设置为 1 的时候使用。应当使用 CRLF (\r\n) 来分隔多个头。<br>例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F; 如果错误连接至数据库，则向服务器日志发送错误消息</span><br><span class="line">if (!mysqli_connect(&quot;localhost&quot;,&quot;bad_user&quot;,&quot;bad_password&quot;,&quot;my_db&quot;)) &#123;</span><br><span class="line">    error_log(&quot;Failed to connect to database!&quot;, 0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 如果用完 FOO，向管理员发送电邮</span><br><span class="line">if (!($foo &#x3D; allocate_new_foo())) &#123;</span><br><span class="line">    error_log(&quot;Oh no! We are out of FOOs!&quot;, 1, &quot;admin@example.com&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt; </span><br></pre></td></tr></table></figure>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>异常处理用于在指定的错误（异常）情况发生时改变脚本的正常流程。这种情况称为异常。<br>当异常被触发时，通常会发生：<br>当前代码状态被保存<br>代码执行被切换到预定义的异常处理器函数<br>根据情况，处理器也许会从保存的代码状态重新开始执行代码，终止脚本执行，或从代码中另外的位置继续执行脚本</p>
+<p>异常的基本使用：<br>正确的处理程序应当包括：<br>Try - 使用异常的函数应该位于 “try” 代码块内。如果没有触发异常，则代码将照常继续执行。但是如果异常被触发，会抛出一个异常。<br>Throw - 这里规定如何触发异常。每一个 “throw” 必须对应至少一个 “catch”<br>Catch - “catch” 代码块会捕获异常，并创建一个包含异常信息的对象<br>例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class customException extends Exception</span><br><span class="line"> &#123;</span><br><span class="line"> public function errorMessage()</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;error message</span><br><span class="line">  $errorMsg &#x3D; &#39;Error on line &#39;.$this-&gt;getLine().&#39; in &#39;.$this-&gt;getFile()&#x2F;*创建 checkNum() 函数。它检测数字是否大于 1。如果是，则抛出一个异常。*&#x2F;</span><br><span class="line">  .&#39;: &lt;b&gt;&#39;.$this-&gt;getMessage().&#39;&lt;&#x2F;b&gt; is not a valid E-Mail address&#39;;</span><br><span class="line">  return $errorMsg;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">$email &#x3D; &quot;someone@example...com&quot;;</span><br><span class="line"></span><br><span class="line">try</span><br><span class="line"> &#123;</span><br><span class="line"> &#x2F;&#x2F;check if </span><br><span class="line"> if(filter_var($email, FILTER_VALIDATE_EMAIL) &#x3D;&#x3D;&#x3D; FALSE)</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;throw exception if email is not valid</span><br><span class="line">  throw new customException($email);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">catch (customException $e)</span><br><span class="line"> &#123;</span><br><span class="line"> &#x2F;&#x2F;display custom message</span><br><span class="line"> echo $e-&gt;errorMessage();</span><br><span class="line"> &#125;</span><br><span class="line">?&gt;</span><br><span class="line">&#x2F;&#x2F;输出：Message: Value must be 1 or below </span><br></pre></td></tr></table></figure>
+<p>创建一个自定义的 Exception 类：<br>创建了一个专门的类，当 PHP 中发生异常时，可调用其函数。该类必须是 exception 类的一个扩展。新的类是旧的 exception 类的副本，外加 errorMessage() 函数。正因为它是旧类的副本，因此它从旧类继承了属性和方法，我们可以使用 exception 类的方法，比如 getLine() 、 getFile() 以及 getMessage()。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class customException extends Exception&#x2F;&#x2F;类的扩展</span><br><span class="line"> &#123;</span><br><span class="line"> public function errorMessage()</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;error message</span><br><span class="line">  $errorMsg &#x3D; &#39;Error on line &#39;.$this-&gt;getLine().&#39; in &#39;.$this-&gt;getFile()</span><br><span class="line">  .&#39;: &lt;b&gt;&#39;.$this-&gt;getMessage().&#39;&lt;&#x2F;b&gt; is not a valid E-Mail address&#39;;</span><br><span class="line">  return $errorMsg;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">$email &#x3D; &quot;someone@example...com&quot;;</span><br><span class="line"></span><br><span class="line">try</span><br><span class="line"> &#123;</span><br><span class="line"> &#x2F;&#x2F;check if </span><br><span class="line"> if(filter_var($email, FILTER_VALIDATE_EMAIL) &#x3D;&#x3D;&#x3D; FALSE)</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;throw exception if email is not valid</span><br><span class="line">  throw new customException($email);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">catch (customException $e)</span><br><span class="line"> &#123;</span><br><span class="line"> &#x2F;&#x2F;display custom message</span><br><span class="line"> echo $e-&gt;errorMessage();</span><br><span class="line"> &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>多个异常:<br>可以使用多个 if..else 代码块，或一个 switch 代码块，或者嵌套多个异常。这些异常能够使用不同的 exception 类，并返回不同的错误消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class customException extends Exception</span><br><span class="line">&#123;</span><br><span class="line">public function errorMessage()</span><br><span class="line">&#123;</span><br><span class="line">&#x2F;&#x2F;error message</span><br><span class="line">$errorMsg &#x3D; &#39;Error on line &#39;.$this-&gt;getLine().&#39; in &#39;.$this-&gt;getFile()</span><br><span class="line">.&#39;: &lt;b&gt;&#39;.$this-&gt;getMessage().&#39;&lt;&#x2F;b&gt; is not a valid E-Mail address&#39;;</span><br><span class="line">return $errorMsg;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$email &#x3D; &quot;someone@example.com&quot;;</span><br><span class="line"></span><br><span class="line">try</span><br><span class="line"> &#123;</span><br><span class="line"> &#x2F;&#x2F;check if </span><br><span class="line"> if(filter_var($email, FILTER_VALIDATE_EMAIL) &#x3D;&#x3D;&#x3D; FALSE)</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;throw exception if email is not valid</span><br><span class="line">  throw new customException($email);</span><br><span class="line">  &#125;</span><br><span class="line"> &#x2F;&#x2F;check for &quot;example&quot; in mail address</span><br><span class="line"> if(strpos($email, &quot;example&quot;) !&#x3D;&#x3D; FALSE)</span><br><span class="line">  &#123;</span><br><span class="line">  throw new Exception(&quot;$email is an example e-mail&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">catch (customException $e)</span><br><span class="line"> &#123;</span><br><span class="line"> echo $e-&gt;errorMessage();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">catch(Exception $e)</span><br><span class="line"> &#123;</span><br><span class="line"> echo $e-&gt;getMessage();</span><br><span class="line"> &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>重新抛出异常<br>有时，当异常被抛出时，您也许希望以不同于标准的方式对它进行处理。可以在一个 “catch” 代码块中再次抛出异常。脚本应该对用户隐藏系统错误。对程序员来说，系统错误也许很重要，但是用户对它们并不感兴趣。为了让用户更容易使用，您可以再次抛出带有对用户比较友好的消息的异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class customException extends Exception</span><br><span class="line"> &#123;</span><br><span class="line"> public function errorMessage()&#x2F;&#x2F;如果 e-mail 地址不合法，则该函数返回一个错误消息。</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;error message</span><br><span class="line">  $errorMsg &#x3D; $this-&gt;getMessage().&#39; is not a valid E-Mail address.&#39;;</span><br><span class="line">  return $errorMsg;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">$email &#x3D; &quot;someone@example.com&quot;;</span><br><span class="line"></span><br><span class="line">try</span><br><span class="line"> &#123;</span><br><span class="line"> try</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;check for &quot;example&quot; in mail address</span><br><span class="line">  if(strpos($email, &quot;example&quot;) !&#x3D;&#x3D; FALSE)</span><br><span class="line">   &#123;</span><br><span class="line">   &#x2F;&#x2F;throw exception if email is not valid</span><br><span class="line">   throw new Exception($email);</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> catch(Exception $e)</span><br><span class="line">  &#123;</span><br><span class="line">  &#x2F;&#x2F;re-throw exception</span><br><span class="line">  throw new customException($email);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">catch (customException $e)</span><br><span class="line"> &#123;</span><br><span class="line"> &#x2F;&#x2F;display custom message</span><br><span class="line"> echo $e-&gt;errorMessage();</span><br><span class="line"> &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>异常总结：<br>需要进行异常处理的代码应该放入 try 代码块内，以便捕获潜在的异常。<br>每个 try 或 throw 代码块必须至少拥有一个对应的 catch 代码块。<br>使用多个 catch 代码块可以捕获不同种类的异常。<br>可以在 try 代码块内的 catch 代码块中再次抛出（re-thrown）异常。</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>过滤器用于验证和过滤来自非安全来源的数据。</p>
+<p>过滤器函数：<br>filter_has_var() 函数检查是否存在指定输入类型的变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filter_has_var(type, variable)</span><br><span class="line">type	：必需。规定要检查的类型。可能的值：INPUT_GET,INPUT_POST,INPUT_COOKIE,INPUT_SERVER,INPUT_ENV</span><br><span class="line">variable：必需。规定要检查的变量。</span><br></pre></td></tr></table></figure>
+<p>filter_id() 函数返回指定过滤器的 ID 号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filter_id(filter_name)</span><br></pre></td></tr></table></figure>
+<p>filter_input() 函数从脚本外部获取输入，并进行过滤，本函数用于对来自非安全来源的变量进行验证，比如用户的输入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">filter_input(input_type, variable, filter, options)</span><br><span class="line">input_type：必需。规定输入类型。参见上面的列表中可能的类型。</span><br><span class="line">variable：规定要过滤的变量。</span><br><span class="line">filter	：可选。规定要使用的过滤器的 ID。默认是 FILTER_SANITIZE_STRING。过滤器 ID 可以是 ID 名称 （比如 FILTER_VALIDATE_EMAIL），或 ID 号（比如 274）。</span><br><span class="line">options：规定包含标志&#x2F;选项的数组。检查每个过滤器可能的标志和选项。</span><br></pre></td></tr></table></figure>
+<p>filter_input_array() 函数从脚本外部获取多项输入，并进行过滤。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filter_input(input_type, args)</span><br><span class="line">input_type：必需。规定输入类型。参见上面的列表中可能的类型。</span><br><span class="line">args	：可选。规定过滤器参数数组。合法的数组键是变量名。合法的值是过滤器 ID，或者规定过滤器、标志以及选项的数组。该参数也可以是一个单独的过滤器 ID，如果是这样，输入数组中的所有值由指定过滤器进行过滤。</span><br></pre></td></tr></table></figure>
+<p>filter_list() 函数返回包含所有得到支持的过滤器的一个数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filter_list()</span><br></pre></td></tr></table></figure>
+<p>filter_var_array() 函数获取多项变量，并进行过滤。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filter_var_array(array, args)</span><br><span class="line">array：必需。规定带有字符串键的数组，包含要过滤的数据。</span><br><span class="line">args	：可选。规定过滤器参数数组。合法的数组键是变量名。合法的值是过滤器 ID，或者规定过滤器、标志以及选项的数组。该参数也可以是一个单独的过滤器 ID，如果是这样，输入数组中的所有值由指定过滤器进行过滤。</span><br></pre></td></tr></table></figure>
+<p>filter_var() 函数通过指定的过滤器过滤变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">variable：必需。规定要过滤的变量。</span><br><span class="line">filter：可选。规定要使用的过滤器的 ID。</span><br><span class="line">options：规定包含标志&#x2F;选项的数组。检查每个过滤器可能的标志和选项。</span><br></pre></td></tr></table></figure>
+<p>两种过滤器：<br>Validating 过滤器：用于验证用户输入，严格的格式规则（比如 URL 或 E-Mail 验证），如果成功则返回预期的类型，如果失败则返回 FALSE<br>Sanitizing 过滤器：用于允许或禁止字符串中指定的字符，无数据格式规则，始终返回字符串</p>
+<h1 id="四-数据库部分"><a href="#四-数据库部分" class="headerlink" title="四.数据库部分"></a>四.数据库部分</h1><h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><p>建立连接：<br><code>mysql_connect(servername,username,password);</code><br>servername：可选。规定要连接的服务器。默认是 “localhost:3306”。<br>username：可选。规定登录所使用的用户名。默认值是拥有服务器进程的用户的名称。<br>password：可选。规定登录所用的密码。默认是 “”。</p>
+<p>关闭连接：<br><code>mysql_close()</code><br>例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$con &#x3D; mysql_connect(&quot;localhost&quot;,&quot;peter&quot;,&quot;abc123&quot;);&#x2F;&#x2F;建立连接</span><br><span class="line">if (!$con)</span><br><span class="line">  &#123;</span><br><span class="line">  die(&#39;Could not connect: &#39; . mysql_error());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; some code</span><br><span class="line"></span><br><span class="line">mysql_close()&#x2F;&#x2F;关闭连接</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建数据库和表"><a href="#创建数据库和表" class="headerlink" title="创建数据库和表"></a>创建数据库和表</h2><p>创建数据库：<br><code>CREATE DATABASE database_name</code><br>创建表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE table_name</span><br><span class="line">(</span><br><span class="line">column_name1 data_type,</span><br><span class="line">column_name2 data_type,</span><br><span class="line">column_name3 data_type,</span><br><span class="line">.......</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO table_name</span><br><span class="line">VALUES (value1, value2,....)</span><br><span class="line">也可以指定插入的列</span><br><span class="line">INSERT INTO table_name (column1, column2,...)</span><br><span class="line">VALUES (value1, value2,....)</span><br></pre></td></tr></table></figure>
+<p>SQL 语句对大小写不敏感。INSERT INTO 与 insert into 相同。<br>让 PHP 执行该语句，我们必须使用 mysql_query() 函数。该函数用于向 MySQL 连接发送查询或命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$con &#x3D; mysql_connect(&quot;localhost&quot;,&quot;peter&quot;,&quot;abc123&quot;);</span><br><span class="line">if (!$con)</span><br><span class="line">  &#123;</span><br><span class="line">  die(&#39;Could not connect: &#39; . mysql_error());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">mysql_select_db(&quot;my_db&quot;, $con);</span><br><span class="line"></span><br><span class="line">mysql_query(&quot;INSERT INTO Persons (FirstName, LastName, Age) </span><br><span class="line">VALUES (&#39;Peter&#39;, &#39;Griffin&#39;, &#39;35&#39;)&quot;);&#x2F;&#x2F;插入</span><br><span class="line"></span><br><span class="line">mysql_query(&quot;INSERT INTO Persons (FirstName, LastName, Age) </span><br><span class="line">VALUES (&#39;Glenn&#39;, &#39;Quagmire&#39;, &#39;33&#39;)&quot;);&#x2F;&#x2F;插入</span><br><span class="line"></span><br><span class="line">mysql_close($con);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="从数据库选取数据"><a href="#从数据库选取数据" class="headerlink" title="从数据库选取数据"></a>从数据库选取数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s) FROM table_name</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$con &#x3D; mysql_connect(&quot;localhost&quot;,&quot;peter&quot;,&quot;abc123&quot;);</span><br><span class="line">if (!$con)</span><br><span class="line">  &#123;</span><br><span class="line">  die(&#39;Could not connect: &#39; . mysql_error());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">mysql_select_db(&quot;my_db&quot;, $con);</span><br><span class="line"></span><br><span class="line">$result &#x3D; mysql_query(&quot;SELECT * FROM Persons&quot;);&#x2F;*查询Persons的全部*&#x2F;</span><br><span class="line"></span><br><span class="line">while($row &#x3D; mysql_fetch_array($result))</span><br><span class="line">  &#123;</span><br><span class="line">  echo $row[&#39;FirstName&#39;] . &quot; &quot; . $row[&#39;LastName&#39;];</span><br><span class="line">  echo &quot;&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">mysql_close($con);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="选取匹配指定条件的数据"><a href="#选取匹配指定条件的数据" class="headerlink" title="选取匹配指定条件的数据"></a>选取匹配指定条件的数据</h2><p>选取匹配指定条件的数据，请向 SELECT 语句添加 WHERE 子句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT column FROM table</span><br><span class="line">WHERE column operator value</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$con &#x3D; mysql_connect(&quot;localhost&quot;,&quot;peter&quot;,&quot;abc123&quot;);</span><br><span class="line">if (!$con)</span><br><span class="line">  &#123;</span><br><span class="line">  die(&#39;Could not connect: &#39; . mysql_error());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">mysql_select_db(&quot;my_db&quot;, $con);</span><br><span class="line"></span><br><span class="line">$result &#x3D; mysql_query(&quot;SELECT * FROM Persons</span><br><span class="line">WHERE FirstName&#x3D;&#39;Peter&#39;&quot;);&#x2F;*选取FirstName&#x3D;&#39;Peter&#39; 的一行*&#x2F;</span><br><span class="line"></span><br><span class="line">while($row &#x3D; mysql_fetch_array($result))</span><br><span class="line">  &#123;</span><br><span class="line">  echo $row[&#39;FirstName&#39;] . &quot; &quot; . $row[&#39;LastName&#39;];</span><br><span class="line">  echo &quot;&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="数据排序"><a href="#数据排序" class="headerlink" title="数据排序"></a>数据排序</h2><p>ORDER BY 关键词用于对记录集中的数据进行排序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name(s)</span><br><span class="line">FROM table_name</span><br><span class="line">ORDER BY column_name</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$con &#x3D; mysql_connect(&quot;localhost&quot;,&quot;peter&quot;,&quot;abc123&quot;);</span><br><span class="line">if (!$con)</span><br><span class="line">  &#123;</span><br><span class="line">  die(&#39;Could not connect: &#39; . mysql_error());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">mysql_select_db(&quot;my_db&quot;, $con);</span><br><span class="line"></span><br><span class="line">$result &#x3D; mysql_query(&quot;SELECT * FROM Persons ORDER BY age&quot;);&#x2F;*按年龄升序排列*&#x2F;</span><br><span class="line"></span><br><span class="line">while($row &#x3D; mysql_fetch_array($result))</span><br><span class="line">  &#123;</span><br><span class="line">  echo $row[&#39;FirstName&#39;];</span><br><span class="line">  echo &quot; &quot; . $row[&#39;LastName&#39;];</span><br><span class="line">  echo &quot; &quot; . $row[&#39;Age&#39;];</span><br><span class="line">  echo &quot;&lt;br &#x2F;&gt;&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">mysql_close($con);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name</span><br><span class="line">SET column_name &#x3D; new_value</span><br><span class="line">WHERE column_name &#x3D; some_value</span><br></pre></td></tr></table></figure>
+<h2 id="删除行"><a href="#删除行" class="headerlink" title="删除行"></a>删除行</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM table_name</span><br><span class="line">WHERE column_name &#x3D; some_value</span><br></pre></td></tr></table></figure>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/hello-world/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 17:24:47
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80-%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86"><span class="toc-text">一.基础部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F"><span class="toc-text">变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%87%BA"><span class="toc-text">输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="toc-text">字符串函数：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F"><span class="toc-text">常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5%EF%BC%8C%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="toc-text">条件语句，循环语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0"><span class="toc-text">函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-text">数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E6%8E%92%E5%BA%8F"><span class="toc-text">数组排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AD%94%E6%9C%AF%E5%B8%B8%E9%87%8F"><span class="toc-text">魔术常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%85%E5%85%A8%E5%B1%80"><span class="toc-text">超全局</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C-%E8%A1%A8%E5%8D%95%E9%83%A8%E5%88%86"><span class="toc-text">二.表单部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E5%A4%84%E7%90%86"><span class="toc-text">表单处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81"><span class="toc-text">表单验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81-%E5%BF%85%E5%A1%AB%E5%AD%97%E6%AE%B5"><span class="toc-text">表单验证 - 必填字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E9%AA%8C%E8%AF%81-%E9%AA%8C%E8%AF%81-E-mail-%E5%92%8C-URL"><span class="toc-text">表单验证 - 验证 E-mail 和 URL</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89-%E9%AB%98%E7%BA%A7%E9%83%A8%E5%88%86"><span class="toc-text">三.高级部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-text">多维数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4"><span class="toc-text">日期和时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Include-%E6%96%87%E4%BB%B6"><span class="toc-text">Include 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86"><span class="toc-text">文件处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%89%93%E5%BC%80-%E8%AF%BB%E5%8F%96-%E5%85%B3%E9%97%AD"><span class="toc-text">文件打开&#x2F;读取&#x2F;关闭</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%9B%E5%BB%BA-%E5%86%99%E5%85%A5"><span class="toc-text">文件创建&#x2F;写入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-text">文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie"><span class="toc-text">cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sessions"><span class="toc-text">Sessions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-text">发送电子邮件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E7%9A%84%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-text">安全的电子邮件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-text">错误处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">过滤器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B-%E6%95%B0%E6%8D%AE%E5%BA%93%E9%83%A8%E5%88%86"><span class="toc-text">四.数据库部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">连接数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E8%A1%A8"><span class="toc-text">创建数据库和表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="toc-text">插入数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%89%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-text">从数据库选取数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E5%8F%96%E5%8C%B9%E9%85%8D%E6%8C%87%E5%AE%9A%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-text">选取匹配指定条件的数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8E%92%E5%BA%8F"><span class="toc-text">数据排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AE"><span class="toc-text">修改数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%A1%8C"><span class="toc-text">删除行</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>
