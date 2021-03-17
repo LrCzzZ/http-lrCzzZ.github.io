@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      渗透测试学习4：扫描器篇 
+      
+      
+      |
+    
+     Hexo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习4：扫描器篇</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 18:29:03
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="Burp-Suite"><a href="#Burp-Suite" class="headerlink" title="Burp Suite"></a>Burp Suite</h1><h2 id="代理（proxy）"><a href="#代理（proxy）" class="headerlink" title="代理（proxy）"></a>代理（proxy）</h2><p>先设置firefox浏览器代理与Burp Suite设置一致。再把拦截打开，就能抓取到数据包。<br>选项说明：<br>intercept：截断，被代理截获的数据包在此进行下一步的操作。<br>HTTP history：http请求历史。<br>options：选项。<br>forwording：截获的数据包放行。<br>drop：截获的数据包丢弃。<br>intercept is on/off：截获打开或者关闭。<br>action：执行的动作或者设置</p>
+<p>Raw：视图主要显示web请求的raw格式，包含请求地址、http协议版本、主机头、浏览器信息、Accept可接受的内容类型、字符集、编码方式、cookie等。我们可以通过手工修改这些信息，对服务器端进行渗透测试。<br>params ：视图主要显示客户端请求的参数信息、包括GET或者POST请求的参数、Cookie参数。渗透人员可以通过修改这些请求参数来完成对服务器端的渗透测试。<br>headers：视图显示的信息和Raw的信息类似，只不过在这个视图中，展示得更直观、友好。<br> Hex ：视图显示Raw的二进制内容，你可以通过hex编辑器对请求的内容进行修改。</p>
+<h2 id="目标（target）"><a href="#目标（target）" class="headerlink" title="目标（target）"></a>目标（target）</h2><p>对目标网站进行扫描的结果存放于此，让我们了解目标应用的整体状况、当前的工作涉及哪些目标域、分析可能存在的攻击面等。可以在此进行站点比较，目标分析等工作。<br>site map：网站地图，扫描的结果。<br>scope：范围，可以把目录放入范围或从范围删除。</p>
+<h2 id="爬行（spider）和扫描（scanner）"><a href="#爬行（spider）和扫描（scanner）" class="headerlink" title="爬行（spider）和扫描（scanner）"></a>爬行（spider）和扫描（scanner）</h2><p>我下载的版本没有这两个个选项。。。<br>但是抓过包在扫描里有爬行选项。也有一些选项，扫描速度之类的。<br>爬行和扫描的过程和结果也能在dashboard（仪表盘）中看到。<br>设置也很简单，没啥可说的。</p>
+<h2 id="测试器（intruder）"><a href="#测试器（intruder）" class="headerlink" title="测试器（intruder）"></a>测试器（intruder）</h2><p>抓包后发送到interder。</p>
+<h3 id="positions选项"><a href="#positions选项" class="headerlink" title="positions选项"></a>positions选项</h3><p>在positions中选择要测试的目标再选择测试模式：<br>1.sniper 狙击手模式（只能使用一个payload位置）<br>使用一组payload集合，一次替换payload位置上被被§标志的文本（而没有被§标志的文本将不受影响），对服务器端进行请求，通常用于测试请求参数是否存在漏洞。</p>
+<p>2.batteringram攻城锤模式<br>它使用单一的Payload集合，依次替换Payload位置上被§标志的文本（而没有被§标志的文本将不受影响），对服务器端进行请求，与狙击手模式的区别在于，如果有多个参数且都为Payload位置标志时，使用的Payload值是相同的，而狙击手模式只能使用一个Payload位置标志。</p>
+<p>3.pitchfork 音叉模式<br>它可以使用多组Payload集合，在每一个不同的Payload标志位置上（最多20个），遍历所有的Payload。举例来说，如果有两个Payload标志位置，第一个Payload值为A和B，第二个Payload值为C和D，则发起攻击时，将共发起两次攻击，第一次使用的Payload分别为A和C，第二次使用的Payload分别为B和D。</p>
+<p>4.clusterbomb集束炸弹模式<br>它可以使用多组Payload集合，在每一个不同的Payload标志位置上（最多20个），依次遍历所有的Payload。它与草叉模式的主要区别在于，执行的Payload数据Payload组的乘积。举例来说，如果有两个Payload标志位置，第一个Payload值为A和B，第二个Payload值为C和D，则发起攻击时，将共发起四次攻击，第一次使用的Payload分别为A和C，第二次使用的Payload分别为A和D，第三次使用的Payload分别为B和C，第四次使用的Payload分别为B和D。</p>
+<h3 id="payloads选项"><a href="#payloads选项" class="headerlink" title="payloads选项"></a>payloads选项</h3><p>再进入payloads选项选择set和types<br>types有很多种：<br>1.simplelist简单列表：通过配置一个字符串列表作为payload，也可以手工添加字符串列表或从文件加载字符串列表。</p>
+<p>2.runtimefile运行时文件 ：指定文件，作为相对应 Payload位置上的Payload列表。运行时，Burp Intruder将读取文件的每一行作为一个Payload。</p>
+<p>3.customiterator自定义迭代器<br>一款功能强大的Payload，它共有8个占位，每一个占位可以指定简单列表的Payload类型，然后根据占位的多少，与每一个简单列表的Payload进行笛卡尔积，生成最终的Payload列表。例如，某个参数的值格式是username@@password，则设置此Payload的步骤是：位置1，选择Usernames。接着，指定位置2，输入值@@最后指定位置3，选择Passwords。当我们开始攻击时，生成的Payload值如图所示：</p>
+<p>4.charactersubstitution字符串替换<br>顾名思义，此种Payload的类型是对预定义的字符串进行替换后生成新的Payload。比如说，预定义字符串为ABCD，按照下图的替换规则设置后，将对AB的值进行枚举后生成新的Payload。则A会替换成4，B会替换成8</p>
+<p>5.casemodification大小写替换<br>生成规则有：①NOchange②To lower caser③To upper case ④To Propername首字母大写，其他小写 ⑤To ProperName 首字母大写，其他不改变</p>
+<p>6.Recursivegrep 递归grep<br>此Payload类型主要使用于从服务器端提取有效数据的场景，需要先从服务器的响应中提取数据作为Payload，然后替换Payload的位置，进行攻击。它的数据来源于原始的响应消息，基于原始响应，在Payload的可选项设置（Options）中配置Grep规则，然后根据grep去提取数据才能发生攻击。如，我在grep extract中设置取服务器端的EagleId作为新的Payload值。点击 OK 后，便完成了payload 的设置当发起攻击时，Burp会对每一次响应的消息进行分析，如果提取到了EagleId的值，则作为Payload再发生一次请求。</p>
+<p>7.illegalunicode不合法的unicode编码<br>在payloads里用指定的不合法Unicode编码替换字符本身，从这些Payload列表里产生出一个或者多个有效负荷。在尝试回避基于模式匹配的输入验证时，这个有效负荷会有用的</p>
+<p>8.characterblocks字符块<br>这种类型的Payload是指使用一个给出的输入字符串，根据指定的设置产生指定大小的字符块，表现形式为生成指定长度的字符串。它通常使用了边界测试或缓冲区溢出。</p>
+<p>9.number 数字类型<br>根据配置，生成一系列的数字作为Payload。Type表示使用序列还是随机数，From表示从什么数字开始，To表示到什么数字截止，Step表示步长是多少，如果是随机数，则How many被激活，表示一共生成多少个随机数。Base表示数字使用十进制还是十六进制形式，Min integerdigits 表示最小的整数是多少，Max integer digits表示最大的整数是多少，如果是10进制，则Minfractiondigits表示小数点后最少几位数，Max fraction digits表示小数点后最多几位数。</p>
+<p>10.Dates日期类型<br>根据配置，生成一系列的日期。格式可以选择burp自己提供的样例格式，也可以自定义</p>
+<p>11.bruteforcer暴力字典<br>此类payload生成包含一个指定的字符集的所有排列特定长度的有效载荷，通常用于枚举字典的生成<br>Character set表示生成字典的数据集，从此数据集中抽取字符进行生成。Min length表示生成Payload的最小长度，Max length表示生成Payload的最大长度。</p>
+<p>12.Nullpayloads空类型<br>这种负载类型产生的Payload，其值是一个空字符串。在攻击时，需要同样的请求反复被执行，在没有任何修改原始请求的场景下此Payload是非常有用的。它可用于各种攻击，例如cookie的序列分析、应用层Dos、或保活会话令牌是在其它的间歇试验中使用。</p>
+<p>13.characterfrobber字符frobber<br>这种类型的Payload的生成规律是：依次修改指定字符串在每个字符位置的值，每次都是在原字符上递增一个该字符的ASCII码。它通常使用于测试系统使用了复杂的会话令牌的部件来跟踪会话状态，当修改会话令牌中的单个字符的值之后，您的会话还是进行了处理，那么很可能是这个令牌实际上没有被用来追踪您的会话。</p>
+<p>14.bitflipper bit翻转<br>对预设的Payload原始值，按照比特位，依次进行修改。<br>设置选项：<br>Operateon：指定对payload原始数据进行bit翻转，还是指定值进行bit翻转<br>Format oforiginal data 是指是否对原始数据的文本意义进行操作，还是应该把它当作ASCII十六进制<br>Select bitsto flip是指选择翻转的Bit位置。可以配置基于文本意义进行操作，或基于ASCII十六进制字符串进行翻转。</p>
+<p>15.usernamegenerator用户名生成器<br>这种类型的payload主要用于用户名和email账号的自动生成</p>
+<p>16.ECB blockshuffler ECB加密块洗牌<br>这种类型的Payload是基于ECB加密模式的Payload生成器，通过改变分组数据的位置方式来验证应用程序是否易受到攻击。</p>
+<p>17.extesion-generated生成插件<br>这种类型的Payload是基于Burp插件来生成Payload值，因此使用前必须安装配置Burp插件，在插件里注册一个Intruderpayload生成器，供此处调用。</p>
+<p>18.copy otherpayload<br>这种类型的Payload是将其他位置的参数复制到Payload位置上，作为新的Payload值，通常适用于多个参数的请求消息中，它的使用场景可能是： 1.两个不同的参数需要使用相同的值，比如说，用户注册时，密码设置会输入两遍，其值也完全一样，可以使用此Payload类型。 2.在一次请求中，一个参数的值是基于另一个参数的值在前端通过脚本来生成的值，可以使用此Payload类型。它的设置界面和参数比较简单，如下图所示，其中Payload位置的索引值就是指向图中Payload set的值。</p>
+<p>也可以在payload processing选项中选择处理规则，例如：添加前后缀、编码方式、hash等</p>
+<h3 id="options选项"><a href="#options选项" class="headerlink" title="options选项"></a>options选项</h3><p>在option中可设置同时工作的线程数量、延时、重试次数、重定向等基本配置。</p>
+<p>暴力破解线程一般设置20-30；企业邮箱设置100<br>超时重试设置3</p>
+<h2 id="重发器（repeater）"><a href="#重发器（repeater）" class="headerlink" title="重发器（repeater）"></a>重发器（repeater）</h2><p>可以修改请求重发来查看响应。可以用来进行注入测试</p>
+<h2 id="编码器（decoder）-对比器（comparer）-扩展器（extender）"><a href="#编码器（decoder）-对比器（comparer）-扩展器（extender）" class="headerlink" title="编码器（decoder）+对比器（comparer）+扩展器（extender）"></a>编码器（decoder）+对比器（comparer）+扩展器（extender）</h2><p>编码器（decoder）：编码译码哈希计算均可，可智能编码。</p>
+<p>对比器（comparer）：橙色改动，蓝色删除，黄色新增。经常运用在sql注入。</p>
+<p>扩展器（extender）：插件扩展。</p>
+<h2 id="扩展学习"><a href="#扩展学习" class="headerlink" title="扩展学习"></a>扩展学习</h2><h3 id="抓取https包"><a href="#抓取https包" class="headerlink" title="抓取https包"></a>抓取https包</h3><p>在开启burp代理的时候，先访问 <a href="http://burp来下载burp证书，再把证书导入到浏览器。导入流程：【选项】—&gt;【高级】—&gt;【证书】—&gt;【查看证书】—&gt;【证书机构】中导入刚才下载的证书。这个过程就是让burp受信。">http://burp来下载burp证书，再把证书导入到浏览器。导入流程：【选项】—&gt;【高级】—&gt;【证书】—&gt;【查看证书】—&gt;【证书机构】中导入刚才下载的证书。这个过程就是让burp受信。</a></p>
+<h3 id="暴力破解技巧"><a href="#暴力破解技巧" class="headerlink" title="暴力破解技巧"></a>暴力破解技巧</h3><p>指定长度方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.采用Custom iterator</span><br><span class="line">$1$$2$$$3$$4$</span><br></pre></td></tr></table></figure>
+<p>所示为四位。<br>2.采用Brute forcer方式来限制最大最小字符长度。<br>3.采用Numbers方式来限制字符串的值。</p>
+<h1 id="AWVS"><a href="#AWVS" class="headerlink" title="AWVS"></a>AWVS</h1><p>之前安装过新版的，与老师上课讲述的版本不大一样，就按照老师的流程跟着做了一遍。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A03%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 18:29:03
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A05%EF%BC%9Asql%E6%89%8B%E6%B3%A8/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Burp-Suite"><span class="toc-text">Burp Suite</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%EF%BC%88proxy%EF%BC%89"><span class="toc-text">代理（proxy）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%EF%BC%88target%EF%BC%89"><span class="toc-text">目标（target）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E8%A1%8C%EF%BC%88spider%EF%BC%89%E5%92%8C%E6%89%AB%E6%8F%8F%EF%BC%88scanner%EF%BC%89"><span class="toc-text">爬行（spider）和扫描（scanner）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%99%A8%EF%BC%88intruder%EF%BC%89"><span class="toc-text">测试器（intruder）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#positions%E9%80%89%E9%A1%B9"><span class="toc-text">positions选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#payloads%E9%80%89%E9%A1%B9"><span class="toc-text">payloads选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#options%E9%80%89%E9%A1%B9"><span class="toc-text">options选项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%8F%91%E5%99%A8%EF%BC%88repeater%EF%BC%89"><span class="toc-text">重发器（repeater）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E5%99%A8%EF%BC%88decoder%EF%BC%89-%E5%AF%B9%E6%AF%94%E5%99%A8%EF%BC%88comparer%EF%BC%89-%E6%89%A9%E5%B1%95%E5%99%A8%EF%BC%88extender%EF%BC%89"><span class="toc-text">编码器（decoder）+对比器（comparer）+扩展器（extender）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0"><span class="toc-text">扩展学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%93%E5%8F%96https%E5%8C%85"><span class="toc-text">抓取https包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3%E6%8A%80%E5%B7%A7"><span class="toc-text">暴力破解技巧</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AWVS"><span class="toc-text">AWVS</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>

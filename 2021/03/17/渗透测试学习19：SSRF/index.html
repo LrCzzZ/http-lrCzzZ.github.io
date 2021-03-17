@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2021 
+      渗透测试学习19：SSRF 
       
       
       |
@@ -95,221 +95,130 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2021</span>
-          </h2>
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习19：SSRF</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 19:01:00
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="SSRF简述"><a href="#SSRF简述" class="headerlink" title="SSRF简述"></a>SSRF简述</h1><p>SSRF(Server-Side Request Forgery，服务器端请求伪造)。是⼀种利⽤服务端发起请求的⼀个安全漏洞。 ⼀般情况下，SSRF攻击的⽬标是从外⽹⽆法访问的内部系统。SSRF 形成的原因⼤都是由于服务端提供了 从其他服务器应⽤获取数据的功能且没有对⽬标地址做过滤与限制</p>
+<p>例子：hacker直接访问不到A服务器（可能是有WAF，或者服务器在内网），但是B服务器可以访问A，于是hacker通过B作为跳板来扫描到A也有可能直接攻击A。</p>
+<p>漏洞危害</p>
+<ul>
+<li>端口扫描 </li>
+<li>攻击运⾏在内⽹或本地的有漏洞程序（⽐如溢出）； </li>
+<li>可以对内⽹Web应⽤进⾏指纹识别，原理是通过请求默认的⽂件得到特定的指纹 </li>
+<li>使⽤⽹络协议读取本地⽂件 </li>
+<li>DDOS攻击（请求⼤⽂件，始终保持连接keep-alive always）<h1 id="常用协议"><a href="#常用协议" class="headerlink" title="常用协议"></a>常用协议</h1>Gopher协议：对⽬标发起攻击的主要协议，主体部分需要进⾏url编码<br>Dict协议：探测端口和版本信息<br>FTP协议：只能探测是否存在FTP<br>HTTP协议：⽤于简单的漏洞验证<br>File协议：读取⽂件<h1 id="漏洞挖掘"><a href="#漏洞挖掘" class="headerlink" title="漏洞挖掘"></a>漏洞挖掘</h1>寻找相关业务点：</li>
+<li>在线翻译</li>
+<li>云盘离线下载</li>
+<li>加载远程文件</li>
+<li>云服务</li>
+</ul>
+<p>或者寻找url关键字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">share、wap、url、link、src、source、target、u、3g、</span><br><span class="line">display、sourceURl、imageURL、domain...</span><br></pre></td></tr></table></figure>
+<h1 id="漏洞验证"><a href="#漏洞验证" class="headerlink" title="漏洞验证"></a>漏洞验证</h1><ol>
+<li><p>排除法：浏览器f12查看源代码看是否是在本地进行了请求<br>比如：该资源地址类型为<code>http://www.xxx.com/a.php?image=（地址)</code>的就可能存在SSRF漏洞</p>
+</li>
+<li><p>dnslog等工具进行测试，看是否被访问</p>
+</li>
+</ol>
+<p>–可以在盲打后台用例中将当前准备请求的uri 和参数编码成base64，这样盲打后台解码后就知道是哪台机器哪个cgi触发的请求。</p>
+<ol start="3">
+<li>抓包分析发送的请求是不是由服务器的发送的，如果不是客户端发出的请求，则有可能是由服务器的发送的，接着找存在HTTP服务的内网地址</li>
+</ol>
+<p>–从漏洞平台中的历史漏洞寻找泄漏的存在web应用内网地址<br>–通过二级域名暴力猜解工具模糊猜测内网地址<br>4. 直接返回的Banner、title、content等信息</p>
+<ol start="5">
+<li>留意bool型SSRF</li>
+</ol>
+<h1 id="bypass"><a href="#bypass" class="headerlink" title="bypass"></a>bypass</h1><p>见 <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44315099/article/details/114826113">SSRF和URL重定向bypass</a>.</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A017%EF%BC%9AJSON%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 19:01:00
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A020%EF%BC%9AURL%E9%87%8D%E5%AE%9A%E5%90%91/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
         </div>
       
-      <div class="post-item" title="渗透测试学习22：业务逻辑漏洞">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A022%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/">
-            <span>渗透测试学习22：业务逻辑漏洞</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="渗透测试学习21：SSRF和URL重定向bypass">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A021%EF%BC%9ASSRF%E5%92%8CURL%E9%87%8D%E5%AE%9A%E5%90%91bypass/">
-            <span>渗透测试学习21：SSRF和URL重定向bypass</span>
-          </a>
-        </div>
-      </div>
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SSRF%E7%AE%80%E8%BF%B0"><span class="toc-text">SSRF简述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%8D%8F%E8%AE%AE"><span class="toc-text">常用协议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-text">漏洞挖掘</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81"><span class="toc-text">漏洞验证</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bypass"><span class="toc-text">bypass</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
     
-      <div class="post-item" title="渗透测试学习20：URL重定向">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A020%EF%BC%9AURL%E9%87%8D%E5%AE%9A%E5%90%91/">
-            <span>渗透测试学习20：URL重定向</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习19：SSRF">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A019%EF%BC%9ASSRF/">
-            <span>渗透测试学习19：SSRF</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习17：JSON安全问题">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A017%EF%BC%9AJSON%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">
-            <span>渗透测试学习17：JSON安全问题</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习16：CSRF">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A016%EF%BC%9ACSRF/">
-            <span>渗透测试学习16：CSRF</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习18：前端安全补充">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A018%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E8%A1%A5%E5%85%85/">
-            <span>渗透测试学习18：前端安全补充</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习15：XSS">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A015%EF%BC%9AXSS/">
-            <span>渗透测试学习15：XSS</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习14：弱口令">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A014%EF%BC%9A%E5%BC%B1%E5%8F%A3%E4%BB%A4/">
-            <span>渗透测试学习14：弱口令</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习13：sql注入">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A013%EF%BC%9Asql%E6%B3%A8%E5%85%A5/">
-            <span>渗透测试学习13：sql注入</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习12：信息泄露">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A012%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">
-            <span>渗透测试学习12：信息泄露</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习11：信息搜集">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A011%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
-            <span>渗透测试学习11：信息搜集</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习10：各类实战性点">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A010%EF%BC%9A%E5%90%84%E7%B1%BB%E5%AE%9E%E6%88%98%E6%80%A7%E7%82%B9/">
-            <span>渗透测试学习10：各类实战性点</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习9：CMS渗透">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A09%EF%BC%9ACMS%E6%B8%97%E9%80%8F/">
-            <span>渗透测试学习9：CMS渗透</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习8：文件上传攻击">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A08%EF%BC%9A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/">
-            <span>渗透测试学习8：文件上传攻击</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习7：目录扫描和后台查找">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A07%EF%BC%9A%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E5%92%8C%E5%90%8E%E5%8F%B0%E6%9F%A5%E6%89%BE/">
-            <span>渗透测试学习7：目录扫描和后台查找</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习6：sql工具注入">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A06%EF%BC%9Asql%E5%B7%A5%E5%85%B7%E6%B3%A8%E5%85%A5/">
-            <span>渗透测试学习6：sql工具注入</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习5：sql手注">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A05%EF%BC%9Asql%E6%89%8B%E6%B3%A8/">
-            <span>渗透测试学习5：sql手注</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习4：扫描器篇">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A04%EF%BC%9A%E6%89%AB%E6%8F%8F%E5%99%A8%E7%AF%87/">
-            <span>渗透测试学习4：扫描器篇</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习3：网络基础">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A03%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
-            <span>渗透测试学习3：网络基础</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习2：MYSQL">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A02%EF%BC%9AMYSQL/">
-            <span>渗透测试学习2：MYSQL</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习1：PHP">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A01%EF%BC%9APHP/">
-            <span>渗透测试学习1：PHP</span>
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
       </div>
     
   </div>
-</div>
+
 
         <div class="footer">
   <div class="social">

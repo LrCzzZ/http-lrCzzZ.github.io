@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      渗透测试学习3：网络基础 
+      
+      
+      |
+    
+     Hexo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习3：网络基础</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 18:25:52
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="网络术语"><a href="#网络术语" class="headerlink" title="网络术语"></a>网络术语</h1><p>不多赘述</p>
+<h1 id="IP基础和网络设备"><a href="#IP基础和网络设备" class="headerlink" title="IP基础和网络设备"></a>IP基础和网络设备</h1><p>不多赘述</p>
+<h1 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h1><h2 id="nmap学习"><a href="#nmap学习" class="headerlink" title="nmap学习"></a>nmap学习</h2><p>基本快速扫描：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap &lt;target ip1 address&gt;</span><br></pre></td></tr></table></figure>
+<p>快速扫描多个目标：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap &lt;target ip1 address&gt; &lt;target ip2 address&gt;</span><br></pre></td></tr></table></figure>
+<p>详细描述输出扫描:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -vv 10.1.1.254</span><br></pre></td></tr></table></figure>
+<p>指定端口和范围扫描:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nmap -p(range) &lt;target IP&gt; </span><br><span class="line">namp -p3389,20-100 10.130.1.43 &#x2F;&#x2F;扫描3389和20-100</span><br></pre></td></tr></table></figure>
+<p>SYN半开放扫描：<br>它被称为半开放扫描因为这种技术使得Nmap不需要通过完整的握手就能获得远程主机的信息。Nmap发送SYN包到远程主机但是它不会产生任何会话.因此不会在目标主机上产生任何日志记录,因为没有形成会话。这个就是SYN扫描的优势.如果Nmap命令中没有指出扫描类型,默认的就是Tcp SYN.但是它需要root/administrator权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sS 192.168.1.1</span><br></pre></td></tr></table></figure>
+<p>TCP扫描:<br>TCP扫描只适用于找出TCP和UDP端口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sT 192.168.1.1</span><br></pre></td></tr></table></figure>
+<p>UDP扫描:<br>寻找目标主机打开的UDP端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sF 110.130.1.43</span><br></pre></td></tr></table></figure>
+<p>ping 扫描:<br>利用类似window/linux 系统下的ping方式进行扫描，用这个命令去扫描内网的一个ip范围用来做内网的主机发现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sP &lt;target ip&gt;</span><br></pre></td></tr></table></figure>
+<p>No ping扫描：<br>因为有时候防火墙会组织掉ping请求，所以使用-PN参数可以绕过PING命令,但是不影响主机的系统的发现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -O -PN 192.168.1.1&#x2F;24</span><br></pre></td></tr></table></figure>
+<p>Version版本检测扫描:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sV 192.168.1.135</span><br></pre></td></tr></table></figure>
+<p>操作系统类型的探测:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -O 10.130.1.43</span><br></pre></td></tr></table></figure>
+<p>以上操作系统的检测未必准确，需要用到如下<br>osscan-guess 猜测匹配操作系统：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -O --osscan-guess 192.168.1.134</span><br></pre></td></tr></table></figure>
+<p>路由跟踪扫描:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -traceroute www.baidu.com</span><br></pre></td></tr></table></figure>
+<p>OS识别,版本探测,脚本扫描和traceroute综合扫描:<br>包括了OS识别,版本探测,脚本扫描和traceroute</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -A 10.130.1.43</span><br></pre></td></tr></table></figure>
+<p>时序选项：<br>-T0到-T5逐渐加快。<br>(现在一般用-T4)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -T4 192.168.21.1</span><br></pre></td></tr></table></figure>
+<p>从文件中读取需要扫描的IP列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -iL ip-address.txt</span><br></pre></td></tr></table></figure>
+<h1 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h1><h2 id="HTTP和HTTPS的区别"><a href="#HTTP和HTTPS的区别" class="headerlink" title="HTTP和HTTPS的区别"></a>HTTP和HTTPS的区别</h2><p>HTTP 的 URL 以 http:// 开头，⽽ HTTPS 的 URL 以 https:// 开头<br>HTTP 是不安全的，⽽ HTTPS 是安全的<br>HTTP 标准端⼝是 80 ，⽽ HTTPS 的标准端⼝是 443 在 OSI ⽹络模型中，HTTP ⼯作于应⽤层，⽽ HTTPS ⼯作在传输层<br>HTTP ⽆需加密，⽽ HTTPS 对传输的数据进⾏加密<br>HTTP ⽆需证书，⽽ HTTPS 需要认证证书</p>
+<p>总结：https安全性更高</p>
+<h2 id="http请求包"><a href="#http请求包" class="headerlink" title="http请求包"></a>http请求包</h2><p>http请求由三部分组成，分别是：请求⾏、消息报头、请求正⽂。<br>请求行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Method Request-URI HTTP-Version CRLF</span><br><span class="line">Method表⽰请求⽅法代码 </span><br><span class="line">Request-URI是⼀个统⼀资源标识符 </span><br><span class="line">HTTP-Version表⽰请求的HTTP协议版本 </span><br><span class="line">CRLF表⽰回车和换⾏（除了作为结尾的CRLF外，不允许出现单独的CR或LF字符）。</span><br></pre></td></tr></table></figure>
+<p>常见请求方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET 请求获取Request-URI所标识的资源 </span><br><span class="line">POST 在Request-URI所标识的资源后附加新的数据</span><br><span class="line">HEAD 请求获取由Request-URI所标识的资源的响应消息报头 </span><br><span class="line">PUT 请求服务器存储⼀个资源，并⽤Request-URI作为其标识 </span><br><span class="line">DELETE 请求服务器删除Request-URI所标识的资源 </span><br><span class="line">OPTIONS 请求查询服务器的性能，或者查询与资源相关的选项和需求</span><br></pre></td></tr></table></figure>
+<p>常见的请求报头：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">User-Agent：包含发出请求的⽤户信息。 </span><br><span class="line">Accept：Accept请求报头域⽤于指定客户端接受哪些类型的信息。eg：Accept：image&#x2F;gif，表明客户端希望接受 GIF图象格式的资源；Accept：text&#x2F;html，表明客户端希望接受html⽂本。</span><br><span class="line">Referer:告诉服务器我是从哪个页⾯链接过来的</span><br><span class="line">Cookie：⾝份凭证</span><br></pre></td></tr></table></figure>
+<h2 id="http响应包"><a href="#http响应包" class="headerlink" title="http响应包"></a>http响应包</h2><p>HTTP响应也是由三个部分组成，分别是：状态⾏、消息报头、响应正⽂。<br>状态⾏格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP-Version Status-Code Reason-Phrase CRLF</span><br><span class="line">HTTP-Version表⽰服务器HTTP协议的版本</span><br><span class="line">Status-Code表⽰服务器发回的响应状态代码 </span><br><span class="line">Reason-Phrase表⽰状态代码的⽂本描述。</span><br></pre></td></tr></table></figure>
+<p>常见的状态码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">200 OK 客户端请求成功</span><br><span class="line">400 Bad Request 客户端请求有语法错误，不能被服务器所理解 </span><br><span class="line">403 Forbidden 服务器收到请求，但是拒绝提供服务 </span><br><span class="line">404 Not Found 请求资源不存在 </span><br><span class="line">500 Internal Server Error 服务器发⽣不可预期的错误 </span><br><span class="line">503 Server Unavailable 服务器当前不能处理客户端的请求，⼀段时间后可能恢复正常</span><br></pre></td></tr></table></figure>
+<p>常见的响应报头：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Server Web服务器名称</span><br><span class="line">Set-cookie 服务器向客户端发送的信息 </span><br><span class="line">Location 服务器通过这个头告诉浏览器去访问哪个页⾯，浏览器接收到这个请求后，通常会⽴刻访问Location头所 指向的页⾯，通过配合302状态码 （重定向）</span><br><span class="line">Refresh 服务器通过这个告诉浏览器定时刷新浏览器</span><br></pre></td></tr></table></figure>
+<h2 id="web通信及前后端"><a href="#web通信及前后端" class="headerlink" title="web通信及前后端"></a>web通信及前后端</h2><p>主机先访问dns解析地址，再与此地址交互。</p>
+<p>URL格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schema:&#x2F;&#x2F;host[:port#]&#x2F;path&#x2F;...&#x2F;[?query-string][#anchor]</span><br></pre></td></tr></table></figure>
+<p>schema协议<br>host[:port]域名或者IP端⼝<br>path/…/路径<br>[?query-string]发送给http服务器的数据<br>[#anchor]锚点<br>注：[ ]代表可选</p>
+<h1 id="服务器搭建"><a href="#服务器搭建" class="headerlink" title="服务器搭建"></a>服务器搭建</h1><p>在win7虚拟机下apache服务器</p>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>在win7下搭建了dvwa</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A02%EF%BC%9AMYSQL/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 18:25:52
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A04%EF%BC%9A%E6%89%AB%E6%8F%8F%E5%99%A8%E7%AF%87/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%9C%AF%E8%AF%AD"><span class="toc-text">网络术语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#IP%E5%9F%BA%E7%A1%80%E5%92%8C%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87"><span class="toc-text">IP基础和网络设备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="toc-text">端口扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#nmap%E5%AD%A6%E4%B9%A0"><span class="toc-text">nmap学习</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTTP%E5%8D%8F%E8%AE%AE"><span class="toc-text">HTTP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E5%92%8CHTTPS%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">HTTP和HTTPS的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#http%E8%AF%B7%E6%B1%82%E5%8C%85"><span class="toc-text">http请求包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#http%E5%93%8D%E5%BA%94%E5%8C%85"><span class="toc-text">http响应包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#web%E9%80%9A%E4%BF%A1%E5%8F%8A%E5%89%8D%E5%90%8E%E7%AB%AF"><span class="toc-text">web通信及前后端</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA"><span class="toc-text">服务器搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9D%B6%E5%9C%BA%E6%90%AD%E5%BB%BA"><span class="toc-text">靶场搭建</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>

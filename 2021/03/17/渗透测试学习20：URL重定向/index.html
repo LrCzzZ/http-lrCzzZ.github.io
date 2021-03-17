@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2021 
+      渗透测试学习20：URL重定向 
       
       
       |
@@ -95,221 +95,118 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2021</span>
-          </h2>
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习20：URL重定向</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 19:02:14
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h1><p>业务逻辑：通过以GET或者POST的⽅式接收将要跳转的URL，然后跳转到⽬标URL。<br>威胁产⽣：服务端未对传入的跳转url变量进行检查和控制，可导致恶意用户构造一个恶意地址，诱导用户跳转到恶意网站。</p>
+<h1 id="漏洞挖掘"><a href="#漏洞挖掘" class="headerlink" title="漏洞挖掘"></a>漏洞挖掘</h1><p>哪些业务可能存在跳转：</p>
+<ul>
+<li>登⼊，登出 </li>
+<li>404⻚⾯ </li>
+<li>站内⼴告 </li>
+<li>跨站点认证、授权 分享内容</li>
+</ul>
+<p>urlt跳转漏洞常见参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">url&#x3D;</span><br><span class="line">login&#x3D;</span><br><span class="line">redirect_to&#x3D;</span><br><span class="line">qurl&#x3D;</span><br><span class="line">logout&#x3D;</span><br><span class="line">data&#x3D;</span><br><span class="line">ext&#x3D;</span><br><span class="line">clickurl&#x3D;</span><br><span class="line">jump_to&#x3D;</span><br><span class="line">next&#x3D;</span><br><span class="line">to&#x3D;</span><br><span class="line">goto&#x3D;</span><br><span class="line">callback_url&#x3D;</span><br><span class="line">jump&#x3D;</span><br><span class="line">jump_url&#x3D;</span><br><span class="line">return&#x3D;</span><br><span class="line">click?u&#x3D;</span><br><span class="line">originUrl&#x3D;</span><br><span class="line">Redirect&#x3D;</span><br><span class="line">sp_url&#x3D;</span><br><span class="line">service&#x3D;</span><br><span class="line">redirect_url&#x3D;</span><br><span class="line">redirect&#x3D;</span><br><span class="line">rit_url&#x3D;</span><br><span class="line">forward_url&#x3D;</span><br><span class="line">callback&#x3D;</span><br><span class="line">forward&#x3D;</span><br><span class="line">success&#x3D;</span><br><span class="line">recurl&#x3D;</span><br><span class="line">j?url&#x3D;</span><br><span class="line">uri&#x3D;</span><br><span class="line">u&#x3D;</span><br><span class="line">allinurl&#x3D;</span><br><span class="line">q&#x3D;</span><br><span class="line">link&#x3D;</span><br><span class="line">src&#x3D;</span><br><span class="line">tc?src&#x3D;</span><br><span class="line">linkAddress&#x3D;</span><br><span class="line">location&#x3D;</span><br><span class="line">go&#x3D;</span><br><span class="line">pic&#x3D;</span><br><span class="line">burl&#x3D;</span><br><span class="line">request&#x3D;</span><br><span class="line">backurl&#x3D;</span><br><span class="line">RedirectUrl&#x3D;</span><br><span class="line">ReturnUrl&#x3D;</span><br><span class="line">origin&#x3D;</span><br><span class="line">Url&#x3D;</span><br><span class="line">desturl&#x3D;</span><br><span class="line">page&#x3D;</span><br><span class="line">u1&#x3D;</span><br><span class="line">action&#x3D;</span><br><span class="line">action_url&#x3D;</span><br><span class="line">target&#x3D;</span><br><span class="line">linkto&#x3D;</span><br><span class="line">domain&#x3D;</span><br><span class="line">dest&#x3D;</span><br></pre></td></tr></table></figure>
+
+<h1 id="漏洞检测方法"><a href="#漏洞检测方法" class="headerlink" title="漏洞检测方法"></a>漏洞检测方法</h1><ul>
+<li>抓取数据包中状态码为302的URL</li>
+<li>修改目标地址</li>
+<li>查看是否正常跳转（如果不存在直接返回到它自己的域名，如果存在则跳转）</li>
+<li>尝试绕过</li>
+<li>注意点：协议一致性问题。有些网站校验跳转后的协议必须为HTTPS，有时候无法跳转并不会提示。</li>
+</ul>
+<h1 id="bypass"><a href="#bypass" class="headerlink" title="bypass"></a>bypass</h1><p>见 <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44315099/article/details/114826113">SSRF和URL重定向bypass</a>.</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A019%EF%BC%9ASSRF/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 19:02:14
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A021%EF%BC%9ASSRF%E5%92%8CURL%E9%87%8D%E5%AE%9A%E5%90%91bypass/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
         </div>
       
-      <div class="post-item" title="渗透测试学习22：业务逻辑漏洞">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A022%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/">
-            <span>渗透测试学习22：业务逻辑漏洞</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="渗透测试学习21：SSRF和URL重定向bypass">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A021%EF%BC%9ASSRF%E5%92%8CURL%E9%87%8D%E5%AE%9A%E5%90%91bypass/">
-            <span>渗透测试学习21：SSRF和URL重定向bypass</span>
-          </a>
-        </div>
-      </div>
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-text">简述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-text">漏洞挖掘</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="toc-text">漏洞检测方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bypass"><span class="toc-text">bypass</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
     
-      <div class="post-item" title="渗透测试学习20：URL重定向">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A020%EF%BC%9AURL%E9%87%8D%E5%AE%9A%E5%90%91/">
-            <span>渗透测试学习20：URL重定向</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习19：SSRF">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A019%EF%BC%9ASSRF/">
-            <span>渗透测试学习19：SSRF</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习17：JSON安全问题">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A017%EF%BC%9AJSON%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">
-            <span>渗透测试学习17：JSON安全问题</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习16：CSRF">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A016%EF%BC%9ACSRF/">
-            <span>渗透测试学习16：CSRF</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习18：前端安全补充">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A018%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E8%A1%A5%E5%85%85/">
-            <span>渗透测试学习18：前端安全补充</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习15：XSS">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A015%EF%BC%9AXSS/">
-            <span>渗透测试学习15：XSS</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习14：弱口令">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A014%EF%BC%9A%E5%BC%B1%E5%8F%A3%E4%BB%A4/">
-            <span>渗透测试学习14：弱口令</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习13：sql注入">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A013%EF%BC%9Asql%E6%B3%A8%E5%85%A5/">
-            <span>渗透测试学习13：sql注入</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习12：信息泄露">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A012%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">
-            <span>渗透测试学习12：信息泄露</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习11：信息搜集">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A011%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
-            <span>渗透测试学习11：信息搜集</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习10：各类实战性点">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A010%EF%BC%9A%E5%90%84%E7%B1%BB%E5%AE%9E%E6%88%98%E6%80%A7%E7%82%B9/">
-            <span>渗透测试学习10：各类实战性点</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习9：CMS渗透">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A09%EF%BC%9ACMS%E6%B8%97%E9%80%8F/">
-            <span>渗透测试学习9：CMS渗透</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习8：文件上传攻击">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A08%EF%BC%9A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/">
-            <span>渗透测试学习8：文件上传攻击</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习7：目录扫描和后台查找">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A07%EF%BC%9A%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E5%92%8C%E5%90%8E%E5%8F%B0%E6%9F%A5%E6%89%BE/">
-            <span>渗透测试学习7：目录扫描和后台查找</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习6：sql工具注入">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A06%EF%BC%9Asql%E5%B7%A5%E5%85%B7%E6%B3%A8%E5%85%A5/">
-            <span>渗透测试学习6：sql工具注入</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习5：sql手注">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A05%EF%BC%9Asql%E6%89%8B%E6%B3%A8/">
-            <span>渗透测试学习5：sql手注</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习4：扫描器篇">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A04%EF%BC%9A%E6%89%AB%E6%8F%8F%E5%99%A8%E7%AF%87/">
-            <span>渗透测试学习4：扫描器篇</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习3：网络基础">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A03%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
-            <span>渗透测试学习3：网络基础</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习2：MYSQL">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A02%EF%BC%9AMYSQL/">
-            <span>渗透测试学习2：MYSQL</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习1：PHP">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A01%EF%BC%9APHP/">
-            <span>渗透测试学习1：PHP</span>
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
       </div>
     
   </div>
-</div>
+
 
         <div class="footer">
   <div class="social">

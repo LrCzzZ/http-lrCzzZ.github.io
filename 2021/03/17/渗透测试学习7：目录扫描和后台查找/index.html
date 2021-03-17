@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2021 
+      渗透测试学习7：目录扫描和后台查找 
       
       
       |
@@ -95,221 +95,123 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2021</span>
-          </h2>
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习7：目录扫描和后台查找</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 18:33:59
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>目录扫描作用点：<br>上传、管理后台、phpinfo、phpmyadmin登录页、⽹站源码备份等。<br>目录扫描原理：<br>不断通过提交⼀个HTTP请求来获取HTTP返回包，以查看返回包的信息来判断某个⽬录（⽂件）是否存在，直到结束。<br>请求方式：GET请求（完整）、HEAD请求（快）。<br>常见工具：<br>御剑、burpsuite、DirBuster等。</p>
+<h1 id="找网站后台办法整理"><a href="#找网站后台办法整理" class="headerlink" title="找网站后台办法整理"></a>找网站后台办法整理</h1><p>1, 穷举猜解  –&gt; 目录扫描<br>    就是根据字典进行穷举。<br>    例子：御剑1.5 御剑珍藏版  御剑2.0  pkav破壳扫描器  safe3</p>
+<p>2, 开源类程序<br>    网站爬行–&gt;目录结构 –&gt; 通过经验判断<br>    web指纹识别工具：御剑web指纹识别、椰树1.7<br>    网站版权信息：Power by DedeCms</p>
+<p>3, 搜索引擎<br>    Google Hacking</p>
+<p>4, 二级域名<br>    将“后台”入口放置于二级域名。<br>    Google Hacking</p>
+<p>5, 其他端口<br>    可能会把后台放在别的端口，用nmap扫。</p>
+<p>6, 盲打  &lt;– Xss –&gt; 存储型XSS –&gt; cookie –&gt; 后台地址  (不要注入)</p>
+<p>7, 站点备份<br>很多站点会有自己整站的文件备份，通常以www、wwwroot、web、webroot等命名，rar,zip,gz,tar.gz,7z等结尾。</p>
+<p>8, 站点其他文件<br>有些程序的编写者开源后，会带上一个readme.txt；<br>网站的css或者js文件，网站作者为了方便，可能会将后台的css样式表、js调用函数等与前台放入同一个文件，看似没有任何价值的文件，里面也许隐藏着后台的一些功能，间接就可能让后台地址暴露出来。</p>
+<p>9, 嗅探  </p>
+<p>10, 如果还找不到后台<br>如果这几种常用方法行不通，我就建议不要在后台上面继续下工夫。实在是不建议你继续受折磨受煎熬，强烈建议从别的地方下手。</p>
+<h1 id="谷歌黑客语法"><a href="#谷歌黑客语法" class="headerlink" title="谷歌黑客语法"></a>谷歌黑客语法</h1><p>常见用法：<br>intitle：搜索网页标题中包含有特定字符的网页。例如输入<code>“intitle:上科互联”</code>，这样网页标题中带有上科互联的网页会被搜索出来。</p>
+<p>inurl：搜索包含有特定字符的URL。例如输入<code>“inurl:/admin_login”</code>，则可以找到带有admin_login字符的URL,通常这类网址是管理员后台的登录网址。</p>
+<p>intext:搜索网页正文内容中的指定字符，例如输入<code>“intext:上科互联”</code>。这个语法类似我们平时在某些网站中使用的“文章内容搜索”功能。</p>
+<p>Filetype:搜索指定类型的文件。例如输入<code>“filetype:PDF”</code>，将返回PDF文档。</p>
+<p>Site：找到与指定网站有联系的URL。例如输入<code>“Site:www.sunghost.cn”</code>。所有和这个网站有联系的URL都会被显示。</p>
+<p>用法举例：<br>查找后台地址：<br><code>site 域名inurl:login|admin|manage|member|admin_login|login_admin|system|login|user|main|cms</code></p>
+<p>查找文本内容：<code>site:域名 intext:管理|后台|登陆|用户名|密码|验证码|系统|帐号|admin|login|sys|managetem|password|username</code></p>
+<p>查找可注入点：<code>site:域名 inurl:aspx|jsp|php|asp</code></p>
+<p>查找上传漏洞：<code>site:域名 inurl:file|load|editor|Files</code></p>
+<p>找eweb编辑器：<code>site:域名 inurl:ewebeditor|editor|uploadfile|eweb|edit</code></p>
+<p>存在的数据库：<code>site:域名 filetype:mdb|asp|#</code></p>
+<p>查看脚本类型：<code>site:域名 filetype:asp/aspx/php/jsp</code></p>
+<p>迂回策略入侵：<code>inurl:cms/data/templates/images/index/ </code></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A06%EF%BC%9Asql%E5%B7%A5%E5%85%B7%E6%B3%A8%E5%85%A5/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 18:33:59
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A08%EF%BC%9A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
         </div>
       
-      <div class="post-item" title="渗透测试学习22：业务逻辑漏洞">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A022%EF%BC%9A%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/">
-            <span>渗透测试学习22：业务逻辑漏洞</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="渗透测试学习21：SSRF和URL重定向bypass">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A021%EF%BC%9ASSRF%E5%92%8CURL%E9%87%8D%E5%AE%9A%E5%90%91bypass/">
-            <span>渗透测试学习21：SSRF和URL重定向bypass</span>
-          </a>
-        </div>
-      </div>
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%BE%E7%BD%91%E7%AB%99%E5%90%8E%E5%8F%B0%E5%8A%9E%E6%B3%95%E6%95%B4%E7%90%86"><span class="toc-text">找网站后台办法整理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B0%B7%E6%AD%8C%E9%BB%91%E5%AE%A2%E8%AF%AD%E6%B3%95"><span class="toc-text">谷歌黑客语法</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
     
-      <div class="post-item" title="渗透测试学习20：URL重定向">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A020%EF%BC%9AURL%E9%87%8D%E5%AE%9A%E5%90%91/">
-            <span>渗透测试学习20：URL重定向</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习19：SSRF">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A019%EF%BC%9ASSRF/">
-            <span>渗透测试学习19：SSRF</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习17：JSON安全问题">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A017%EF%BC%9AJSON%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98/">
-            <span>渗透测试学习17：JSON安全问题</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习16：CSRF">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A016%EF%BC%9ACSRF/">
-            <span>渗透测试学习16：CSRF</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习18：前端安全补充">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A018%EF%BC%9A%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8%E8%A1%A5%E5%85%85/">
-            <span>渗透测试学习18：前端安全补充</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习15：XSS">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A015%EF%BC%9AXSS/">
-            <span>渗透测试学习15：XSS</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习14：弱口令">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A014%EF%BC%9A%E5%BC%B1%E5%8F%A3%E4%BB%A4/">
-            <span>渗透测试学习14：弱口令</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习13：sql注入">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A013%EF%BC%9Asql%E6%B3%A8%E5%85%A5/">
-            <span>渗透测试学习13：sql注入</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习12：信息泄露">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A012%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">
-            <span>渗透测试学习12：信息泄露</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习11：信息搜集">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A011%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
-            <span>渗透测试学习11：信息搜集</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习10：各类实战性点">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A010%EF%BC%9A%E5%90%84%E7%B1%BB%E5%AE%9E%E6%88%98%E6%80%A7%E7%82%B9/">
-            <span>渗透测试学习10：各类实战性点</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习9：CMS渗透">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A09%EF%BC%9ACMS%E6%B8%97%E9%80%8F/">
-            <span>渗透测试学习9：CMS渗透</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习8：文件上传攻击">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A08%EF%BC%9A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB/">
-            <span>渗透测试学习8：文件上传攻击</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习7：目录扫描和后台查找">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A07%EF%BC%9A%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E5%92%8C%E5%90%8E%E5%8F%B0%E6%9F%A5%E6%89%BE/">
-            <span>渗透测试学习7：目录扫描和后台查找</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习6：sql工具注入">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A06%EF%BC%9Asql%E5%B7%A5%E5%85%B7%E6%B3%A8%E5%85%A5/">
-            <span>渗透测试学习6：sql工具注入</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习5：sql手注">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A05%EF%BC%9Asql%E6%89%8B%E6%B3%A8/">
-            <span>渗透测试学习5：sql手注</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习4：扫描器篇">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A04%EF%BC%9A%E6%89%AB%E6%8F%8F%E5%99%A8%E7%AF%87/">
-            <span>渗透测试学习4：扫描器篇</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习3：网络基础">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A03%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
-            <span>渗透测试学习3：网络基础</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习2：MYSQL">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A02%EF%BC%9AMYSQL/">
-            <span>渗透测试学习2：MYSQL</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="渗透测试学习1：PHP">
-        <div class="time-m-d">03-17</div>
-        <div class="title">
-          <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A01%EF%BC%9APHP/">
-            <span>渗透测试学习1：PHP</span>
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
       </div>
     
   </div>
-</div>
+
 
         <div class="footer">
   <div class="social">

